@@ -1,8 +1,6 @@
 # Linpack_HPL running with OpenBLAS
 Target audience: OpenPOWER partners
-> instructions assume Ubuntu installation.
-
-Normal user "openpower" is used for steps below.
+> Instructions assume Ubuntu installation. Normal user "openpower" is used for steps below.
 #### 1. Install supported packages:
 1. Download and install IBM XLF for linux runtime and add-on:
  
@@ -19,7 +17,6 @@ Normal user "openpower" is used for steps below.
    https://developer.ibm.com/linuxonpower/advance-toolchain/advtool-installation/
 
 3. Install OpenMPI
- 
    ```bash
    sudo apt install openmpi-common libopenmpi-dev openmpi-bin libopenmpi2
    ```	
@@ -27,7 +24,6 @@ Normal user "openpower" is used for steps below.
 4. Build OpenBLAS
  
    Currently, 0.2.19 version is verified. Later versions should be fine (or better) but have not been verified. To download OpenBLAS and build it:
-
       ```bash
       git clone `http://github.com/xianyi/OpenBLAS/`
       # alternatively you could : wget 'http://github.com/xianyi/OpenBLAS/archive/v0.2.19.tar.gz'
