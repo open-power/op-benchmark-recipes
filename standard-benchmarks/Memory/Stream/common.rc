@@ -1,0 +1,8 @@
+#!/bin/bash
+current_dscr=$(ppc64_cpu --dscr | awk -F "is" '{print $2}')
+totalcorenum=$(expr $(lscpu -e=CORE | grep -v "\-" | tail -n 1) + 1)
+socketnum=$(expr $(lscpu -e=SOCKET | grep -v "\-" | tail -n 1) + 1)
+corenum_per_sock=$(expr $totalcorenum / $socketnum)
+lastthread_single_sock=$(expr $(expr $corenum_per_sock \* 4) - 1)
+lastthread=$(expr $(expr $totalcorenum \* 4) - 1)
+second_node_num=$(lscpu -e=NODE | grep -v "\-" | tail -n 1)
