@@ -1,5 +1,5 @@
 # sockperf
-_Copied from https://github.com/mellanox/sockperf_
+_For more info please check https://github.com/mellanox/sockperf_
 
 sockperf is a network benchmarking utility over socket API that was designed for testing performance (latency and throughput) of high-performance systems (it is also good for testing performance of regular networking systems as well). It covers most of the socket API calls and options.
 
