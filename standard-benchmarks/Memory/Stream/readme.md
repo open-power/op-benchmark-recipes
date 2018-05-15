@@ -1,4 +1,4 @@
-## Stream on OpenPOWER systems
+## Stream on Power Systems
 Target audience: OpenPOWER partners; IBM on-site application engineers
 ### Steps:
 #### 1. Get stream code:
