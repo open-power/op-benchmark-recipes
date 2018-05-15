@@ -1,4 +1,4 @@
-## Running lmbench's lat_mem_rd on OpenPOWER (Power9) systems
+## Running LMbench's lat_mem_rd on Power Systems
 
 Target audience: OpenPOWER partners; IBM on-site application engineers
 
