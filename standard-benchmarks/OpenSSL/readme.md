@@ -14,3 +14,4 @@ egrep "ppc64|^aes|^sha|^ghash" log > single_copy_tests.log
 egrep "ppc64|^evp|numa.*multi" log > multi_copy_tests.log
 ```
 
+> There's a bugzilla defect opened against Advanced Toolchain 11.0 with OpenSSL : [defect 167453](https://bugzilla.linux.ibm.com/show_bug.cgi?id=167453)
