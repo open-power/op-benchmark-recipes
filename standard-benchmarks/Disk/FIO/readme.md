@@ -1,4 +1,4 @@
-## POWER8/9 Instructions
+## POWER Instructions
 
 * The *iostat* and *fio* tools must be installed on the machine. In ubuntu:
 ```bash
