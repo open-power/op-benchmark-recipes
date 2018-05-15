@@ -1,6 +1,6 @@
 # SPEC and standard benchmarks
 ## SPEC benchmarks
-> For more info, consult: [Standard Performance Evaluation Corporation](spec.org)
+> For more info, consult: [Standard Performance Evaluation Corporation](http://spec.org)
 
 TBD
 ## Standard benchmarks
