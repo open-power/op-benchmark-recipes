@@ -6,7 +6,7 @@ TBD
 ## Standard benchmarks
 [FIO : Disk IO](Disk/FIO)
 
-[Linpack/HPL/OpenBLAS - CPU](HPL)
+[Linpack/HPL/OpenBLAS : CPU](HPL)
 
 [LMbench : Memory Latency](Memory/lat_mem_rd_lmbench)
 
