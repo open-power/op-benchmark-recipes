@@ -18,4 +18,4 @@ TBD
 
 [Stream : Memory Bandwidth](Memory/Stream)
 
-[Sysbench : Multi-thread/LuaJIT](Sysbench)
+[Sysbench : CPU/Memory test suite](Sysbench)
