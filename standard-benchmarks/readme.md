@@ -2,7 +2,9 @@
 ## SPEC benchmarks
 > For more info, consult: [Standard Performance Evaluation Corporation](http://spec.org)
 
-TBD
+[CPU2006](CPU/SPEC-cpu2006)
+
+JBB2015 :  Java
 ## Standard benchmarks
 [FIO : Disk IO](Disk/FIO)
 
