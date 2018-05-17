@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+<!DOCTYPE flagsdescription
+    SYSTEM "http://www.spec.org/dtd/cpuflags2.dtd"
+>
+
+<!--
+-->
+<!-- The lines above are NOT optional.  If you're adept at reading DTDs,
+     the one that this file conforms to is at the URL listed above.  
+     
+     But most humans writing a flags file will want to have it automatically 
+     checked using a validating parser such as RXP (available at
+     http://www.ltg.ed.ac.uk/~richard/rxp.html), or use one of the on-line
+     parsers:
+       http://www.stg.brown.edu/service/xmlvalid/
+       http://www.cogsci.ed.ac.uk/~richard/xml-check.html
+     
+     The parser used by the CPU tools is _not_ a validating parser, so it
+     may be possible to sneak things by it that would not pass the checkers
+     above.  However, if the checkers above say that your file is clean, it's
+     clean.
+
+     Flag files submitted to SPEC _will_ be checked by a validating parser.
+     Invalid or not-well-formed flag files will be rejected.
+-->
+
+<!-- **********************************************************************
+     **********************************************************************
+     Unless otherwise explicitly noted, all references to "section n.nn"
+     refer to flag_description.html, available at
+
+     http://www.spec.org/cpu2006/docs/flag_description.html
+     **********************************************************************
+     ********************************************************************** -->
+
+<!--
+     This file is
+       Copyright (C) 2006 Standard Performance Evaluation Corporation
+       All Rights Reserved
+     
+     This file may be freely modified and redistributed, provided that the
+     copyright notice above and this notice remain unaltered.
+
+-->
+
+<flagsdescription>
+
+<filename>IBM-Linux-V7</filename>
+
+<title>IBM Power Linux Flags file</title>
+
+<style>
+<![CDATA[
+body { background: white; }
+]]>
+</style>
+
+<!-- =====================================================================
+  Information about the meaning of boot-time settings, BIOS options,
+  kernel tuning, and so forth can go in the 'platform_settings' section.
+
+  They'll be appended to the end of both the flags dump and per-result flag report.
+
+  As the contents should be HTML, it will save lots of time to just enclose
+  the whole thing in a CDATA section.  Section 2.3.1 again.
+     ===================================================================-->
+<submit_command>
+<![CDATA[
+
+<p> <b> submit = numactl -l -C $BIND $command </b> </p>
+<ul>
+<li> Each process was bound to a cpu using submit= with the numactl command
+<pre> 
+submit = numactl --membind=\$SPECCOPYNUM --physcpubind=\$SPECCOPYNUM $command
+submit = numactl -l -C $BIND $command
+</pre> </li>
+
+<li> numactl : Control NUMA policy for processes or shared memory
+<pre> 
+      -l
+       Allocates memory from the local node of the cpu.
+
+     --membind=nodes
+       Only  allocate  memory  from  nodes.   Allocation will fail when
+       there is not enough memory available on these nodes.
+
+     -C
+    --physcpubind=cpus
+       Only execute process on cpus.  This accepts physical cpu numbers
+       as shown in the processor fields of /proc/cpuinfo.
+</pre> </li>
+</ul>
+
+]]>
+</submit_command>
+
+<sw_environment>
+<![CDATA[
+
+<ul>
+<li>Environment variables that can be set before the run:
+<pre>
+XLFRTEOPTS=intrinthrds=1 : Causes the Fortran runtime to only use a single thread.
+</pre></li>
+
+
+<li> To reserve 200 huge pages out of the physical memory pool, issue the following command,
+<pre>
+echo 200 > /proc/sys/vm/nr_hugepages
+</pre> 
+or 
+<pre>
+echo 200 > /proc/sys/vm/nr_overcommit_hugepages
+</pre>
+to allocate from the dynamic hugepage pool.
+
+This can be done in both Red Hat and Suse Enterprise, since both distributions implements Transparent Huge Pages (THP).
+THP is an abstraction layer that automates most aspects of creating, managing and using huge pages, and can currently only map anonymous memory regions such as heap and stack space. 
+<pre>
+You can also use the environment variables below to manage huge pages behavior:
+
+HUGETLB_VERBOSE=0 : Turn off any debugging message from libhugetlbfs
+HUGETLB_MORECORE=yes:  Instructs libhugetlbfs to override libc's normal morecore() function with a hugepage version and use it for malloc(). 
+HUGETLB_MORECORE_HEAPBASE=0x50000000: Specifies that the hugepage heap address to start at 0x50000000. 
+HUGETLB_ELFMAP=R ; Instructs libhugetlbfs to place text segment in hugepages.
+HUGETLB_ELFMAP=W ; Instructs libhugetlbfs to place data and BSS segments in hugepages.
+HUGETLB_ELFMAP=RW ; Instructs libhugetlbfs to place all segments in hugepages.
+HUGETLB_ELFMAP=no ; Instructs libhugetlbfs not to place any segment in hugepages.
+</pre>
+</li>
+</ul>
+
+]]>
+</sw_environment>
+
+<os_tuning>
+<![CDATA[
+
+<ul>
+<li> <kbd>ulimit -s 1048576</kbd> 
+<br />Sets the maximum stack size to "<kbd>1048576 KB</kbd>".</li>
+</ul>
+
+]]>
+</os_tuning>
+
+<firmware>
+<![CDATA[
+
+<ul>
+<li>Idle Power Saving</li>
+</ul>
+<pre>
+       Enables idle mode power reduction methods, when in Nominal, SPS, DPS.
+       Drop in frequency, voltage.
+	   Enable core-folding to exploit P7+ deep-sleep mode.
+	   
+	   Goal is to meet idle power criteria for EnergyStar v1 and v2 tests.
+            1. Enter “idle” 5-15 minutes after full load test.
+            2. Measure system power for 5 minutes.
+            3. Report system power as average measured in step 2.
+            4. If the value reported in step 3 is below a “computed threshold” the system qualifies for EnergyStar label.
+			
+       To Enable or disable the Idle Power Saving log into Advanced System Management web interface and go to 
+       System Configurator -> Power Management and click into Idle Power Saver. Select enabled or disabled in the combo
+       box and click in Save settings.
+</pre>
+
+]]>
+</firmware>
+
+</flagsdescription>
