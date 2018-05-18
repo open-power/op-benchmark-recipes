@@ -57,9 +57,18 @@ cd /home/spec/cpu2006
 You will need type "yes" to confirm installation directory. This may take a minute or two to finish.
 
 #### 4. Compile the SPEC CPU2006 binary for ppc64le
-Using the provided config file, please run:
+Copy the provided config file to `/home/spec/cpu2006/config`. Then calculate the number of _hugepages_ per 
+the [hugetlbpage support page](https://www.kernel.org/doc/Documentation/vm/hugetlbpage.txt)
 ```bash
+ulimit -s unlimited
+export HUGETLB_MORECORE=yes
+export HUGETLB_VERBOSE=0
+echo <num> > /proc/sys/vm/nr_hugepages # <num> i.e. 60000
+swapoff -a
 
+runspec -N -a validate -c $CONFIG -T peak -S $TEST -r int
+# $CONFIG is the configuration file 
+# $TEST is the system configuration in the config file, i.e. p9_32_core
 ```
 
 #### 5. Launch SPEC CPU2006 run
