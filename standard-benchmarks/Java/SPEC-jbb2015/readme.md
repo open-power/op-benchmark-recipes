@@ -5,7 +5,7 @@ Download the SPECjbb2015 kit from the SPEC website:
 
 [https://www.spec.org/order.html](https://www.spec.org/order.html)
 
-Copy the included tar file to the _SPECjbb2015_ installation directory, cd there, and untar it to obtain additional scripts and configuration files needed to run the benchmark:
+Copy the included tar file to the _SPECjbb2015_ installation directory. From there, untar it to obtain additional scripts and configuration files needed to run the benchmark:
 ```bash
 cp ibm_java8_sr3fp22.power8.kit.tar.xz $specjbb2015_install_dir
 cd $specjbb2015_install_dir
@@ -33,9 +33,9 @@ Inside the _SPECjbb2015_ installation dir and depending of the Power machine con
 
 If your configuration is different from above, the scripts can be modified for your hardware. 
 
-> Note: The scripts apply the appropriate tuning to the machine before running the benchmarks by calling tune.sh automatically, so this does not have to be done as a separate step.
+> Note: The scripts apply the appropriate tuning to the machine before running the benchmarks by calling `tune.sh` automatically, so this does not have to be done as a separate step.
 
-The number of `groups` in the benchmark depend on the number of `NUMA nodes` in the machine, and the `processor binding` depends on the `number of cores in each NUMA node`. The differences in the scripts above illustrate the changes required.
+The number of `groups` in the benchmark depend on the number of `NUMA nodes` in the machine, and the `processor binding` depends on the `number of cores` in each NUMA node. The differences in the scripts above illustrate the changes required.
 
 ### Monitoring the progress of the run and getting results
 
@@ -48,4 +48,4 @@ tail -f controller.out
 
 When the run ends, the tail of `controller.out` contains the metrics of interest *max jOPs* and *critical jOPs*
 
-For more information please check [https://www.spec.org/jbb2015](https://www.spec.org/jbb2015/), where a `Users Guide` and other details of what the benchmark does can be obtained.
+For more information please check [https://www.spec.org/jbb2015](https://www.spec.org/jbb2015/), where a `Users Guide` and other details on the benchmark can be obtained.
