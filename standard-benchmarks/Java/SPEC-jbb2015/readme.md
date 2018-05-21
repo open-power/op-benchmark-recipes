@@ -12,11 +12,9 @@ cd $specjbb2015_install_dir
 tar -xvf ibm_java8_sr3fp22.power8.kit.tar.xz
 ```
 
-Please chose to overwrite all files.
+Please choose to overwrite all files.
 
->Note: If needed, the kit can be run with OpenJDK. For ease of use, IBM JDK 8.0.3.22 has been included in the tar file. Newer versions of the IBM JDK can be obtained at https://developer.ibm.com/javasdk/downloads/sdk8/
-
-
+>Note: If needed, the kit can be run with OpenJDK. For ease of use, IBM SDK 8.0.3.22 has been included in the tar file. Newer versions of the IBM SDK can be obtained at https://developer.ibm.com/javasdk/downloads/sdk8/
 ## Running the benchmark (as root user)
 Before running, make sure the _numactl_ package is installed and the system smt setting is _on_. In Ubuntu:
 ```bash
@@ -31,11 +29,9 @@ Inside the _SPECjbb2015_ installation dir and depending of the Power machine con
     
     Two sockets, 24 cores - DCM (2 chips and 12 cores/socket, Tuleta) run: ./run_multi.2socket.dcm.24core.sh
 
-If your configuration is different from above, the scripts can be modified for your hardware. 
-
 > Note: The scripts apply the appropriate tuning to the machine before running the benchmarks by calling `tune.sh` automatically, so this does not have to be done as a separate step.
 
-The number of `groups` in the benchmark depend on the number of `NUMA nodes` in the machine, and the `processor binding` depends on the `number of cores` in each NUMA node. The differences in the scripts above illustrate the changes required.
+If your configuration is different from above, the scripts can be modified for your hardware. The number of `groups` in the benchmark depend on the number of `NUMA nodes` in the machine, and the `processor binding` depends on the `number of cores` in each NUMA node. The differences in the scripts above illustrate the changes required.
 
 ### Monitoring the progress of the run and getting results
 
