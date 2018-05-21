@@ -14,8 +14,7 @@ tar -xvf ibm_java8_sr3fp22.power8.kit.tar.xz
 
 Please chose to overwrite all files.
 
->Note: If needed, the kit can be run with OpenJDK. For ease of use, IBM JDK 8.0 has been included in the tar file.
-Newer version of the IBM JDK can be obtained at https://developer.ibm.com/javasdk/downloads/sdk8/
+>Note: If needed, the kit can be run with OpenJDK. For ease of use, IBM JDK 8.0.3.22 has been included in the tar file. Newer versions of the IBM JDK can be obtained at https://developer.ibm.com/javasdk/downloads/sdk8/
 
 
 ## Running the benchmark (as root user)
@@ -38,9 +37,9 @@ If your configuration is different from above, the scripts can be modified for y
 
 The number of `groups` in the benchmark depend on the number of `NUMA nodes` in the machine, and the `processor binding` depends on the `number of cores in each NUMA node`. The differences in the scripts above illustrate the changes required.
 
-### Monitoring the progress of the run and getting the results
+### Monitoring the progress of the run and getting results
 
-The run  takes about 2 hours to complete. Each run creates a results directory with the current time stamp as the name.
+A benchmark run takes about 2 hours to complete. Each run creates a results directory with the current time stamp as the name.
 
 While the benchmark is in progress, to check its status:
 ```bash
