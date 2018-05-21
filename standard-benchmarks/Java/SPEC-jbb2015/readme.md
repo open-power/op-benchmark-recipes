@@ -1,7 +1,7 @@
 # Running SPEC jbb2015 on Power ppc64le systems
 ## Installation  
   
-Download the SPECjbb2015 kit from the SPEC website:
+Download the SPECjbb2015 kit from the SPEC website and install it:
 
 [https://www.spec.org/order.html](https://www.spec.org/order.html)
 
