@@ -7,7 +7,7 @@ https://developer.ibm.com/linuxonpower/advance-toolchain/advtool-installation/
 Currently advance toolchain is at version 11.0. Version 9.0 has been tested to run IBM binary for SPEC CPU2006. 
 
 >*Note: download and install Advanced Toolchain is expected to be slow.*
-### 2. Install IBM XLC and XLF compilers
+### 2. Install IBM XLC and XLF compilers (includes runtime)
 Download and install IBM XL C/C++ for Linux:
 https://www.ibm.com/developerworks/downloads/r/xlcpluslinux/index.html
 
