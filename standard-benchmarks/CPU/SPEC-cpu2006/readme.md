@@ -13,20 +13,9 @@ https://www.ibm.com/developerworks/downloads/r/xlcpluslinux/index.html
 
 Download and install IBM XL Fortran for Linux: 
 https://www.ibm.com/developerworks/downloads/r/xlfortranlinux/index.html
-### 3. Install IBM XLC and XLF runtime and addons packages
-Download and install IBM XLC runtime version 13.1.5:
-http://www-01.ibm.com/support/docview.wss?uid=swg24042868
 
-Download and install IBM XLC addons version 13.1.5:
-http://www-01.ibm.com/support/docview.wss?uid=swg24042866
-
-Download and install IBM XLF runtime version 15.1.5:
-http://www-01.ibm.com/support/docview.wss?uid=swg24042871
-
-Download and install IBM XLF addons version 15.1.5:
-http://www-01.ibm.com/support/docview.wss?uid=swg24042869
-### 4. Install SPEC CPU2006 package
-#### 4.1 Extract SPEC CPU2006 package: 
+### 3. Install SPEC CPU2006 package
+#### 3.1 Extract SPEC CPU2006 package: 
 Assume SPEC CPU2006 license is purchased from http://spec.org/ and SPEC CPU2006 code package is downloaded.  
 ```bash
 mkdir -p /home/spec/cpu2006 
@@ -40,7 +29,7 @@ mount -oloop,ro <cpu2006-1.x.iso> /mnt/iso
 tar xf /mnt/iso/install_archives/cpu2006.tar.xz -C /home/spec/cpu2006
 umount /mnt/iso
 ```    
-#### 4.2 Download and extract toolset for ppc64le
+#### 3.2 Download and extract toolset for ppc64le
 Visit https://www.spec.org/cpu2006/src.alt/ and download **linux-ubuntu14_04-ppc64le-67.tar.**
 
 *Note: The file is kernel independent and currently good for Ubuntu xenial/artful.*
@@ -48,7 +37,7 @@ Visit https://www.spec.org/cpu2006/src.alt/ and download **linux-ubuntu14_04-ppc
 wget 'https://www.spec.org/cpu2006/src.alt/linux-ubuntu14_04-ppc64le-67.tar'
 tar xf linux-ubuntu14_04-ppc64le-67.tar -C /home/spec/cpu2006
 ```    
-#### 4.3 Install SPEC CPU2006 
+#### 3.3 Install SPEC CPU2006 
 Please invoke **./install.sh** to install SpecCPU2006.
 
 ```bash
@@ -57,7 +46,7 @@ cd /home/spec/cpu2006
 ```
 
 You will need type "yes" to confirm installation directory. This may take a minute or two to finish.
-### 5. Compile the SPEC CPU2006 binary for ppc64le
+### 4. Compile the SPEC CPU2006 binary for ppc64le
 Copy the provided config file to `/home/spec/cpu2006/config`. Then calculate the number of _hugepages_ per 
 the [hugetlbpage support page](https://www.kernel.org/doc/Documentation/vm/hugetlbpage.txt)
 ```bash
@@ -73,7 +62,7 @@ runspec -a validate -c $CONFIG -T peak -S $SYMBOL -r int
 # $SYMBOL is the system configuration (preprocessor macro) in the config file, i.e. p9_32_core
 ```
 
-### 6. Launch SPEC CPU2006 run
+### 5. Launch SPEC CPU2006 run
 To run CPU2006 integer part (both base and peak), please run:
 ```bash
 cd /home/spec/cpu2006
