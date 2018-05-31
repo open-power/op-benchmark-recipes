@@ -5,9 +5,9 @@
 Please refer to URL:
 https://developer.ibm.com/linuxonpower/advance-toolchain/advtool-installation/
 
-Currently advance toolchain is version 11.0. Version 9.0 has been tested to run IBM binary for SPEC CPU2006. 
+Currently advance toolchain is at version 11.0. Version 9.0 has been tested to run IBM binary for SPEC CPU2006. 
 
-*Note: download and install Advanced Toolchain is expected to be slow.*
+>*Note: download and install Advanced Toolchain is expected to be slow.*
 
 #### 2. Install IBM XLC and XLF runtime and addons packages
 Download and install IBM XLC runtime version 13.1.5:
@@ -60,15 +60,16 @@ You will need type "yes" to confirm installation directory. This may take a minu
 Copy the provided config file to `/home/spec/cpu2006/config`. Then calculate the number of _hugepages_ per 
 the [hugetlbpage support page](https://www.kernel.org/doc/Documentation/vm/hugetlbpage.txt)
 ```bash
+source .shrc
 ulimit -s unlimited
 export HUGETLB_MORECORE=yes
 export HUGETLB_VERBOSE=0
-echo <num> > /proc/sys/vm/nr_hugepages # <num> i.e. 60000
+echo $num > /proc/sys/vm/nr_hugepages # i.e. $num=60000
 swapoff -a
 
-runspec -N -a validate -c $CONFIG -T peak -S $TEST -r int
+runspec -a validate -c $CONFIG -T peak -S $SYMBOL -r int
 # $CONFIG is the configuration file 
-# $TEST is the system configuration in the config file, i.e. p9_32_core
+# $SYMBOL is the system configuration (preprocessor macro) in the config file, i.e. p9_32_core
 ```
 
 #### 5. Launch SPEC CPU2006 run

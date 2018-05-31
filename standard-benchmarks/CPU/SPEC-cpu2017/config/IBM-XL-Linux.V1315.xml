@@ -1,0 +1,1512 @@
+<?xml version="1.0"?>
+<!DOCTYPE flagsdescription
+    SYSTEM "http://www.spec.org/dtd/cpuflags2.dtd"
+>
+
+<!-- This example flags file can be used with the IBM XL Linux config file.  
+     It includes summaries of documentation from IBM and from SPEC, for 
+     the benefit of readers of SPEC results. -->
+     
+<flagsdescription>
+
+<filename>IBM-XL-Linux.V1315</filename>
+
+<title>IBM XL Compiler Flags, Common Operating System Commands and Environment Settings</title>
+
+<style>
+<![CDATA[
+body { background: white; }
+]]>
+</style>
+
+<!-- =====================================================================
+  Information about the meaning of fdo program options.
+  They'll be appended to the end of both the flags dump and per-result flag report.
+     ===================================================================-->
+
+<fdo_settings>
+<![CDATA[
+<p>
+fdprpro is a Feedback Directed Program Restructuring optimization tool that is available for the IBM POWER platform. It can be used optionally during FDO.
+</p>
+
+<p>
+An example command to invoke fdprpro for the optimization pass is:
+</p>
+<ul>
+   <li> fdprpro -a opt -O4 -m power8 -A 2 -rcl 2 -sls -dir -vrox</li>
+</ul>
+
+<pre>
+
+Additional details regarding usage and flags are provided below.
+
+Usage:
+fdprpro -a/--action [action] [options] program 
+where `program' specifies the input program in the form of an executable or a shared object
+[action] can be one of the following:
+	anl	 analyze program
+	instr	 generate instrumented program for profile gathering
+	opt	 generate optimized program
+	check_sign	 check FDPR signature in the input program
+	sample	 generate script file for collecting sampled profile
+[options] can be one of the following:
+
+
+ Analysis Options:
+           
+  -aawc, --analyze-assembly-written-csects
+          Analyze objects written in Assembly.
+  -acf &lt;analysis configuration file&gt;, --analysis-configuration-file &lt;analysis configuration file&gt;
+          Provide a configuration file of analysis information (advanced option)
+  -asd/-noasd, --analyze-static-data/--noanalyze-static-data
+          
+  -ifl &lt;file&gt;, --ignored-function-list &lt;file&gt;
+          Set the ignored function list. The file contains names of functions
+          that considered as unsafe and thus are not modified
+
+
+ Instrumentation Options:
+           
+  -fd &lt;Fdesc&gt;, --file-descriptor &lt;Fdesc&gt;
+          Set the file descriptor number to be used when opening the profile
+          file. The default of &lt;Fdesc&gt; is set to the maximum-allowed number of
+          open files
+  -icvp, --instr-call-value-profiling
+          instrument the values of parameters passed in function calles
+  -imullX, --mullX-instrumentation
+          perform value profiling of RA and RB operands in mullX instructions
+  -iderat, --derat-instrumentation
+          Perform value profiling of RA and RB operands in load/store indexed
+          instructions
+  -issu, --instrumentation-safe-stack-usage
+          Ensure that additional stack space is properly allocated for the
+          instrumented run. Use this option if your application uses the stack
+          extensively (e.g., when the program uses alloca()). Note that this
+          option adds extra overhead on instrumentation code
+  -iso &lt;offset&gt;, --instrumentation-stack-offset &lt;offset&gt;
+          Set the offset from the stack, a negative number, where the
+          instrumentation's area for saving registers is kept at runtime. Use
+          with care
+  -M &lt;addr&gt;, --profile-map &lt;addr&gt;
+          Set the shared memory segment address for profiling. Alternative shared
+          memory addresses are needed when the instrumented program application
+          creates a conflict with the shared-memory addresses preserved for the
+          profiling. Typical alternative values are 0x40000000, 0x50000000, ...
+          up to 0xC0000000. The default is set to 0x3000000
+  -ptm, --profile-to-memory
+          Use shared memory key instead of file mapping to obtain a shared memory
+          area for the profile data
+  -ri/-nori, --register-instrumentation/--noregister-instrumentation
+          Instrument/Do not instrument the input program file to collect profile
+          information about indirect branches via registers. The default is set
+          to collect the profile information
+  -sfp/-nosfp, --save-floating-point-registers/--nosave-floating-point-registers
+          Save/Do not save floating point registers in instrumented code. The
+          default is set to save floating point registers
+  -shmkey &lt;key number&gt;, --shared-memory-key &lt;key number&gt;
+          Specify a shared memory key to use when creating a shared memory area
+          for the profile. The default key is created by hashing the profile
+          file name (with ftok).
+
+
+ Profile Files Options:
+           
+  -af &lt;prof_file&gt;, --ascii-profile-file &lt;prof_file&gt;
+          Set the name of a text format profile file containing profile
+          information.
+  -aop, --accept-old-profile
+          Accept the old profile file collected on previous versions of the input
+          program file (requires the -f flag)
+  -f &lt;prof_file&gt;, --profile-file &lt;prof_file&gt;
+          Set the profile file name. The profile file is created during the
+          instrumentation phase and read during the optimization phase. The
+          profile file is updated each time you run the instrumented program
+  -fdir &lt;prof_file_dir&gt;, --profile-file-directory &lt;prof_file_dir&gt;
+          Set the run-time location of the profile file. The profile will be
+          search during the profiling phase at this location. The default
+          location is the path given in the profile file name (-f option).
+          Applicable only at instrumentation phase
+
+
+ Optimization Options:
+           
+  -A &lt;alignment&gt;, --align-code &lt;alignment&gt;
+          Specify code alignment strategy. 1: Use grouping rules of target
+          machine (default), 2: Same as 1 but consider also hotness of branch
+          targets. See -m for the selected machine model.
+  -abb &lt;factor&gt;, --align-basic-blocks &lt;factor&gt;
+          Align basic blocks that are hotter than the average by a given (float)
+          &lt;factor&gt;. This is a lower-level machine-specific alignment compared to
+          --align-code. Value of -1 (the default) disables this option
+  -bf, --branch-folding
+          Eliminate branch to branch instructions
+  -ccc &lt;threshold&gt;, --cold-code-connector &lt;threshold&gt;
+          Preserves original order for code which is less frequently executed
+          than given threshold
+  -bp, --branch-prediction
+          Set branch prediction bit for conditional branches according to the
+          collected profile
+  -cbpth, --cold-branch-prediction-threshold
+          Set the Cold Branch Prediction Threshold for branch prediction
+          optimization. Branches whose execution count relative to the average
+          is below this value will be statically predicted. Allowed values are
+          between (0,1). Default is -1 - optimization is not applied.
+          (Applicable only with the -bp flag)
+  -pbp, --preserve-branch-predication
+          Preserve branch predication pattern (bc+8) and avoid code reordering
+          and branch prediction
+  -cbsi, --chain-based-selective-inline
+          Perform selective inlining of functions that produce long hot chains of
+          code
+  -dce, --dead-code-elimination
+          Eliminate instructions related to unused local variables within
+          frequently executed functions. This is useful mainly after applying
+          function inlining optimization
+  -dp, --data-prefetch
+          Insert data-cache prefetch instructions to improve data-cache
+          performance
+  -ece, --epilog-code-eliminate
+          Reduce code size by grouping common instructions in function epilogs,
+          into a single unified code
+  -fatc &lt;num_of_bytes&gt;, --fat-const &lt;num_of_bytes&gt;
+          Inflate constant areas in code section by adding &lt;num_of_bytes&gt; (entire
+          set to 255) to each constant area
+  -fatd &lt;num_of_bytes&gt;, --fat-data &lt;num_of_bytes&gt;
+          Inflate data section by adding &lt;num_of_bytes&gt; (entire set to 255) to
+          each data basic unit
+  -fatn &lt;num_of_nops&gt;, --fat-nop &lt;num_of_nops&gt;
+          Inflate code secion by adding &lt;num_of_nop&gt; to each code basic block
+  -bined &lt; binary_editor&gt;, --binary-editor &lt; binary_editor&gt;
+          Edit existing binary code (advanced option)
+  -hr, --hco-reschedule
+          Relocate instructions from frequently executed code to rarely executed
+          code areas, when possible
+  -hrf &lt;factor&gt;, --hco-resched-factor &lt;factor&gt;
+          Set the aggressiveness of the -hr optimization option according to a
+          factor value between (0,1), where 0 is the least aggressive factor
+          (applicable only with the -hr option)
+  -tasr, --toc-anchor-store-reschedule
+          Relocate TOC store instructions from frequently executed code to rarely
+          executed code areas, when possible
+  -i, --inline
+          Same as --selective-inline with --inline-small-funcs 12
+  -ihf &lt;pct&gt;, --inline-hot-functions &lt;pct&gt;
+          Inline all function call sites to functions that have a frequency count
+          greater than the given &lt;pct&gt; frequency percentage
+  -isf &lt;size&gt;, --inline-small-funcs &lt;size&gt;
+          Inline all functions that are smaller than or equal to the given &lt;size&gt;
+          in bytes
+  -kr, --killed-registers
+          Eliminate stores and restores of registers that are killed
+          (overwritten) after frequently executed function calls
+  -lap, --load-address-propagation
+          Eliminate load instructions of variable addresses by re-using
+          pre-loaded addresses of adjacent variables
+  -las, --load-after-store
+          Add NOP instructions to place each load instruction further apart
+          following a store instruction that references the same memory address
+  -plas, --pattern-based-load-after-store
+          Optimizes inefficient memory access patterns in order to avoid
+          load-after-store events. 
+  -ebplas, --event-based-pattern-based-load-after-store
+          Optimizes inefficient memory access patterns in order to avoid
+          load-after-store events. The optimization is possible if
+          PM_MRK_LSU_REJECT_LHS profile is available
+  -rcl, --remove-constant-load
+          Reduces the number of load instructions used to bring constant values
+          into registers. The parameter is used to control which version of
+          optimization is applied, versions from 0 to 3 are available.
+  -pvgc &lt;mode&gt;, --print-visual-graph-csect &lt;mode&gt;
+          Print a .dot file with CFG information for each csect. Mode 0 is for a
+          graph containing full instructions list for each node, 1 is for a
+          graph with short nodes description.
+  -pvgf &lt;mode&gt;, --print-visual-graph-func &lt;mode&gt;
+          Print a .dot file with CFG information for each function. Mode 0 is for
+          a graph containing full instructions list for each node, 1 is for a
+          graph with short nodes description.
+  -lro, --link-register-optimization
+          Eliminate saves and restores of the link register in
+          frequently-executed functions
+  -lu &lt;aggressiveness_factor&gt;, --loop-unroll &lt;aggressiveness_factor&gt;
+          Unroll short loops containing one to several basic blocks according to
+          an aggressiveness factor between (1,9), where 1 is the least
+          aggressive unrolling option for very hot and short loops
+  -lun &lt;unrolling_number&gt;, --loop-unrolling-number &lt;unrolling_number&gt;
+          Set the number of unrolled iterations in each unrolled loop. The
+          allowed range is between (2,50). Default is set to 2. (Applicable only
+          with the -lu flag)
+  -lux &lt;unrolling_factor&gt;, --loop-unroll-extended &lt;unrolling_factor&gt;
+          Unroll hot loops using given unrolling factor. The allowed values are
+          integer numbers that are power of 2. Value -1 disables the
+          optimization, value 1 calculates the unrolling factor automatically,
+          given a machine model
+  -nop, --nop-removal
+          Remove NOP instructions from reordered code
+  -sls, --store-load-on-stack-opt
+          Optimize store load on stack pattern
+  -fmrx, --fmr-to-xxlor
+          Replace FMR instructions from reordered code with XXLOR instruction
+  -xscpx, --xscpsgndp-to-xxlor
+          Replace Xscpsgndp instructions from reordered code with XXLOR
+          instruction
+  -divopt, --divide-optimization
+          Replace fdiv/fdivs instructions with fre + fmul/fmuls instructions
+  -tslopt, --toc-store-in-loop-optimization
+          Remove toc store instructions from the loop and place toc store
+          instruction before loop 
+  -ifopt, --instruction_fusion_optimization
+          put together two instructions suitable for fusion 
+  -liopt, --loop_invariant_optimization
+          move loop invariant instructions out of the loop 
+  -sfopt, --simple_functions_opt
+          inlining of the simple functions (isascii, isdigit) 
+  -dir, --dependant-instr-resched
+          Put NOP between dependant instructions
+  -O      Switch on basic optimizations only. Same as -RC -nop -bp -bf
+  -O2     Switch on less aggressive optimization flags. Same as -O -hr -pto -isf
+          8 -tlo -kr -see 0 
+  -O3     Switch on aggressive optimization flags. Same as -O2 -RD -isf 12 -si
+          -lro -las -vro -btcar (for XCOFF files) -lu 9 -rt 0 -so -see 1 -oderat
+          -tslopt
+  -O4     Switch on aggressive optimization flags together with aggressive
+          function inlining. Same as -O3 -sidf 50 -ihf 20 -sdp 9 -shci 90 and
+          -bldcg (for XCOFF files)
+  -ocvp, --opt-call-value-profiling
+          specialize function calls according to the values of their passed
+          parameters
+  -omullX, --mullX-optimization
+          Optimize mullX instructions by adding a run-time check on RA and RB and
+          performing equivalent operations with lower penalty. The optimization
+          requires the use of -imullX in the instrumentation phase
+  -oderat, --derat-optimization
+          Optimize load/store indexed instructions by adding a run-time check on
+          RA and RB and performing equivalent operations with lower penalty. The
+          optimization requires the use of -iderat in the instrumentation phase
+  -pbsi, --path-based-selective-inline
+          Perform selective inlining of dominant hot function calls based on the
+          control flow paths leading to hot functions
+  -pca, --propagate-constant-area
+          Relocate the constant variables area to the top of the code section
+          when possible
+  -pr/-nopr, --ptrgl-r11/--noptrgl-r11
+          Perform/Do not perform removal of R11 load instruction in _ptrgl csect
+          (the default is to perform the optimization)
+  -pto, --ptrgl-optimization
+          Perform optimization of indirect call instructions via registers by
+          replacing them with conditional direct jumps
+  -ptoht &lt;heatness_threshold&gt;, --ptrgl-optimization-heatness-threshold &lt;heatness_threshold&gt;
+          Set the frequency threshold for indirect calls that are to be optimized
+          by -pto optimization. Allowed range between 0 and 1. Default is set to
+          0.8. (Applicable only with -pto flag)
+  -ptosl &lt;limit_size&gt;, --ptrgl-optimization-size-limit &lt;limit_size&gt;
+          Set the limit of the number of conditional statements generated by -pto
+          optimization. Allowed values are between 1 and 100. Default value is
+          set to 3. (Applicable only with the -pto flag)
+  -RC, --reorder-code
+          Perform code reordering
+  -rcaf &lt;aggressiveness_factor&gt;, --reorder-code-aggressivenes-factor &lt;aggressiveness_factor&gt;
+          Set the aggressiveness of code reordering optimization. Allowed values
+          are [0 | 1 | 2], where 0 preserves then original code order and 2 is
+          the most aggressive. Default is set to 1. (Applicable only with the
+          -RC flag)
+  -rccrf &lt;reversal_factor&gt;, --reorder-code-condition-reversal-factor &lt;reversal_factor&gt;
+          Set the threshold fraction that determines when to enable condition
+          reversal for each conditional branch during code reordering. Allowed
+          input range is between 0.0 and 1.0 where 0.0 tries to preserve
+          original condition direction and 1.0 ignores it. Default is set to 0.8
+          (Applicable only with the -RC flag)
+  -rcctf &lt;termination_factor&gt;, --reorder-code-chain-termination-factor &lt;termination_factor&gt;
+          Set the threshold fraction that determines when to terminate each chain
+          of basic blocks during code reordering. Allowed input range is between
+          0.0 and 1.0 where 0.0 generates long chains and 1.0 creates single
+          basic block chains. Default is set to 0.05. (Applicable only with the
+          -RC flag)
+  -RD, --reorder-data
+          Perform static data reordering
+  -ippcf, --instrument-for-path-profiling
+          Perform cross function path profiling instrumentation
+  -ppcf, --optimize-with-path-profiling
+          Perform cross function path profiling optimization
+  -rmte, --remove-multiple-toc-entries
+          Remove multiple TOC entries pointing to the same location in the input
+          program file
+  -rt &lt;removal_factor&gt;, --reduce-toc &lt;removal_factor&gt;
+          Perform removal of TOC entries according to a removal factor between
+          (0,1), where 0 removes non-accessed TOC entries only and 1 removes all
+          possible TOC entries
+  -rtb, --remove-traceback-tables
+          Remove traceback tables in reordered code
+  -sdp &lt;aggressiveness_factor&gt;, --stride-data-prefetch &lt;aggressiveness_factor&gt;
+          Perform data prefetching within frequently executed loops based on
+          stride analysis, according to an aggressiveness factor between (1,9),
+          where 1 is the least aggressive
+  -sdpila &lt;instructions_number&gt;, --stride-data-prefetch-instruction-look-ahead &lt;instructions_number&gt;
+          Set the number of instructions for which data is prefetched into the
+          cache ahead of time. Default value is platform dependant. (Applicable
+          only with the -sdp flag)
+  -sdpms &lt;stride_min_size&gt;, --stride-data-prefetch-min-size &lt;stride_min_size&gt;
+          Set the minimal stride size in bytes, for which data will be considered
+          a candidate for prefetching. Default value is set to 128 bytes.
+          (Applicable only with the -sdp flag)
+  -ebp &lt;evt_based_prefetch&gt;, --event-based-prefetch &lt;evt_based_prefetch&gt;
+          Perform data prefetching based on the events file
+  -ebpla &lt;instructions_number&gt;, --event-based-prefetch-look-ahead &lt;instructions_number&gt;
+          Set the number of instructions for which event based prefetch is
+          performed. Default value is platform dependant. (Applicable only with
+          the -ebp flag)
+  -see &lt;level&gt;
+          Use simplified prolog/epilog for functions that perform conditional
+          early-exit. Use basic optimization with &lt;level&gt;=0 and maximal with
+          &lt;level&gt;=1
+  -shci &lt;pct&gt;, --selective-hot-code-inline &lt;pct&gt;
+          Perform selective inlining of functions in order to decrease the total
+          number of execution counts, so that only functions with hotness above
+          the given percentage are inlined
+  -si, --selective-inline
+          Perform selective inlining of dominant hot function calls
+  -sidf &lt;percentage_factor&gt;, --selective-inline-dominant-factor &lt;percentage_factor&gt;
+          Set a dominant factor percentage for selective inline optimization. The
+          allowed range is between 0 and 100. Default is set to 80. (Applicable
+          only with the -si and -pbsi flags)
+  -siht &lt;frequency_factor&gt;, --selective-inline-hotness-threshold &lt;frequency_factor&gt;
+          Set a hotness threshold factor percentage for selective inline
+          optimization to inline all dominant function calls that have a
+          frequency count greater than the given frequency percentage. Default
+          is set to 100. (Applicable only with the -si -pbsi flags)
+  -slbp, --spinlock-branch-prediction
+          Perform branch prediction bit setting for conditional branches in
+          spinlock code containing l*arx and st*cx instructions. (Applicable
+          after -bp flag)
+  -sldp, --spinlock-data-prefetch
+          Perform data prefetching for memory access instructions preceding
+          spinlock code containing l*arx and st*cx instructions
+  -sll &lt;Lib1:Prof1,...,LibN:ProfN&gt;, --static-link-libraries &lt;Lib1:Prof1,...,LibN:ProfN&gt;
+          Statically link hot code from specified dynamically linked libraries to
+          the input program. The parameter consists of a comma-separated list of
+          libraries and their profiles. IMPORTANT: Licensing rights of specified
+          libraries should be observed when applying this copying optimization
+  -sllht &lt;hotness_threshold&gt;, --static-link-libraries-hotness-threshold &lt;hotness_threshold&gt;
+          Set hotness threshold for the --static-link-libraries optimization. The
+          allowed input range is between 0 (least aggressive) and 1, or -1,
+          which does not require a profile and selects all code that might be
+          called by the input program from the given libraries. Default is set
+          at 0.5
+  -so, --stack-optimization
+          Reduce the stack frame size of functions that are called with a small
+          number of arguments
+  -spc, --shortcut-plt-calls
+          Shortcut PLT calls in shared libraries to local functions if they
+          exist. Note: Resolving to external symbols is disabled for such calls
+  -tb, --preserve-traceback-tables
+          Force the restructuring of traceback tables in reordered code. If -tb
+          option is omitted, traceback tables are automatically included only
+          for C++ applications that use the Try &amp; Catch mechanism
+  -tlo, --tocload-optimization
+          Replace each load instruction that references the TOC with a
+          corresponding add-immediate instruction via the TOC anchor register,
+          where possible
+  -vro, --volatile-registers-optimization
+          Eliminate stores and restores of non-volatile registers in frequently
+          executed functions by using available volatile registers
+  -vrox, --volatile-registers-extended-optimization
+          Eliminate stores and restores of non-volatile registers in frequently
+          executed functions by using available volatile registers, the extended
+          version supports FP registers and transparency
+
+
+ Output Options:
+           
+  -cep, --complement-edge-profile
+          Complements partial profile information given for the basic blocks'
+          frequencies by adding missing basic block-to-basic block edge counts
+  -d, --disassemble-text
+          Print the disassembled text section of the output program into
+          &lt;output_file&gt;.dis_text file
+  -dap, --dump-ascii-profile
+          Dump profile information in ASCII format into &lt;program&gt;.aprof (requires
+          the -f flag).
+  -db, --disassemble-bss
+          Print the disassembled bss section of the output program into
+          &lt;output_file&gt;.dis_bss file
+  -dd, --disassemble-data
+          Print the disassembled data section of the output program into
+          &lt;output_file&gt;.dis_data file
+  -diap, --dump-initial-ascii-profile
+          Dump the given profile information in ASCII format into
+          &lt;program&gt;.aprof.init (requires the -f flag)
+  -dim, --dump-instruction-mix
+          Dump instruction mix statistics based on gathered profile information
+  -dm, --dump-mapper
+          Print a map of basic blocks and static variables with their respective
+          new -&gt; old addresses into a &lt;program&gt;.mapper file
+  -o &lt;output_file&gt;, --output-file &lt;output_file&gt;
+          Set the name of the output file. The default instrumented file is
+          &lt;program&gt;.instr. The default optimized file is &lt;program&gt;.fdpr
+  -scl, --show-constant-load
+          Adds annotaions in fdpr disassembly on load instructions used to bring
+          constant values into registers (requires -d flag)
+  -ppcf, --print-prof-counts-file
+          Print a text format of the profiling counters into a &lt;program&gt;.counts
+          file (requires the -f flag).
+  -sf, --strip-file
+          Strip the output file
+  -simo, --single-input-multiple-outputs
+          Optimize in parallel into multiple outputs as specified by option sets
+          read from stdin
+
+
+ General Options:
+           
+  -h, --help
+          Print the online help
+  -j &lt;jour_file&gt;, --journal &lt;jour_file&gt;
+          Output optimization journal information to &lt;jour_file&gt;
+  -smt, --smt_mode
+          set SMT mode (1:ST, 2: (SMT2-shared, SMT2-split), 4:SMT4, 8:SMT8)
+  -m &lt;machine-model&gt;, --machine &lt;machine-model&gt;
+          Generate code for the specified machine model. Target machine can be
+          one of the following models: power2, power3, ppc405, ppc440, power4,
+          ppc970, power5, power6, power7, power8, ppe, spe, spe_edp, z10, z9.
+  -q, --quiet
+          Set the output mode to quiet, suppressing informational messages
+  -st &lt;stat_file&gt;, --statistics &lt;stat_file&gt;
+          Output statistics information to &lt;stat_file&gt;. If &lt;stat_file&gt; is '-',
+          the output goes to the standard output. See --verbose for the default
+  -v &lt;level&gt;, --verbose &lt;level&gt;
+          Set verbose output mode level. When set, various statistics about the
+          output program are printed into the file &lt;program&gt;.stat. Allowed level
+          range is between 0 and 3. Default is set to 0
+  -V, --version
+          Print the version number
+  -w &lt;level&gt;, --warning-level &lt;level&gt;
+          Set the warning level so only errors of this level and below will be
+          printed. The levels are: 1: errors, 2: warnings, 3: debug warning, 4:
+          debug information. Default is 2
+- Analysis options should be specified identically in the instrumentation and optimization phases
+- Some options are relevant only to specific platforms
+</pre>
+]]>
+</fdo_settings>
+
+<header>
+<![CDATA[
+<p>Compilers: IBM XL C/C++ Version 13.1.5 for Linux</p>
+<p>Compilers: IBM XL Fortran Version 15.1.5 for Linux</p>
+<p>Libraries: IBM Advance Toolchain</p>
+<p>Operating systems: Red Hat Enterprise Linux Server release 7; Ubuntu 16.04</p>
+<p>Last updated: $LastChangedDate: 2017-04-11 09:45:29 -0400 (Tue, 11 Apr 2017) $ revision $LastChangedRevision: 5573 $</p> ]]>
+</header>
+
+
+<!--
+  -
+  -	Optimization flags.
+  -
+  -->
+
+
+<flag name="F-B"
+      class="optimization"
+      regexp="-B/\S*"
+>
+Determines substitute path names for XL Fortran executables such as the compiler, assembler, linker, and preprocessor.
+It can be used in combination with the -t option, which determines which of these components are affected by -B.
+Example : -B/opt/at10.0/share/libhugetlbfs/
+</flag>
+
+
+<flag name="F-D__extern_always_inline:inline"
+      class="optimization"
+      regexp="-D__extern_always_inline=inline\b">
+Macro to have compiler always inline externs if specified.
+</flag>
+
+
+<flag name="hugetlbfs_align"
+      class="optimization"
+      regexp="-Wl,--hugetlbfs-align"
+>
+Pass the --hugetlbfs-align flag to the linker so that we  can control (by environment variable HUGETLB_ELFMAP) which program segments are placed in hugepages.
+</flag>
+
+
+<flag name="hugetlbfs_BDT"
+      class="optimization"
+      regexp="-Wl,--hugetlbfs-link=BDT"
+>
+Pass the --hugetlbfs-link=BDT flag to the linker so that the text, initialized data, and BSS segments of the application are backed by hugepages.
+</flag>
+
+
+<flag name="F-lessl"
+      class="optimization"
+      regexp="-lessl\b">
+Link the Engineering and Scientific Subroutine Library (ESSL).
+</flag>
+
+
+<flag name="F-lhugetlbfs"
+      class="optimization"
+>
+Link with libhugetlbfs.so. This enables heap to be backed by the 16 Megabyte pages.
+</flag>
+
+
+
+<flag name="F-lmass"
+      class="optimization"
+      regexp="-lmass\b">
+Link the mathematical acceleration subsystem libraries (MASS), which contain libraries of tuned mathematical intrinsic functions.
+</flag>
+
+
+
+<flag name="F-ltcmalloc"
+      class="optimization"
+>
+Link with tcmalloc's library for Linux on POWER. This is a library that optimizes calls to new, delete, malloc and free.
+</flag>
+
+<flag name="link_dl_static"
+      class="optimization"
+      regexp="/usr/lib/libdl.a"
+>
+Instructs the linker to include libdl.a to enable dynamic linking loader. Links "/usr/lib/libdl.a" library.
+</flag>
+
+
+<flag name="link_emit_relocation"
+      class="optimization"
+      regexp="-Wl,-q\b"
+>
+Pass the -q flag to the linker causing the final executable to have the relocation information.
+</flag>
+
+
+
+<flag name="link_mul_defs" 
+      class="optimization"
+      regexp="-Wl,-z,muldefs"
+>
+Instructs the linker to allow multiple definitions and the first definition will be used. 
+Normally when a symbol is defined multiple times, the linker will report a fatal error.
+</flag>
+
+
+<flag name="link_no_whole_archive"
+      class="optimization"
+      regexp="-Wl,--no-whole-archive"
+>
+Turn off the effect of the --whole-archive flag. 
+</flag>
+
+
+<flag name="link_whole_archive"
+      class="optimization"
+      regexp="-Wl,--whole-archive\s/\S*"
+>
+Instructs the linker to include every object file in the specified library, rather than searching the library for the required object files.
+Example : "-Wl,--wholearchive /usr/lib/libhugetlbfs.a"
+</flag>
+
+<flag name="F-lstd8d"
+      class="optimization"
+>
+Link with the Apache C++ Standard Library ("stdcxx"). "libstd8d.so" is a 32-bit shared library with optimization enabled.
+</flag>
+
+
+<flag name="Lstd"
+      class="optimization"
+      regexp="-L\s*[^ ]*stdcxx[^ ]*">
+Adds the directory for the Apache C++ Standard Library to the search path at link time.
+</flag>
+
+
+
+<flag name="F-O"
+      class="optimization"
+      regexp="-O\b">
+<example>-O</example>
+<![CDATA[
+<tt>-O</tt> enables the level of optimization that represents the best tradeoff between compilation speed and run-time performance.
+If you need a specific level of optimization, specify the appropriate numeric value. 
+Currently,<tt> -O </tt>is equivalent to<tt> -O2</tt>.
+]]>
+<include flag="F-O2" />
+</flag>
+
+
+
+<flag name="F-O2"
+      class="optimization"
+      regexp="-O2\b">
+<example>-O2</example>
+<![CDATA[
+<tt>-O2 </tt>performs a set of optimizations that are intended to offer improved performance without an unreasonable 
+ increase in time or storage that is required for compilation including : 
+<ul>
+  <li> Eliminates redundant code </li>
+  <li> Basic loop optimization </li>
+  <li> Can structure code to take advantage of <tt>-qarch</tt> and <tt>-qtune </tt>settings </li>
+</ul>
+]]>
+<include flag="F-O" />
+</flag>
+
+
+
+<flag name="F-O3"
+      class="optimization"
+      regexp="-O3\b">
+<example>-O3</example>
+<![CDATA[
+<tt>-O3 </tt>Performs additional optimizations that are memory intensive, compile-time intensive, and may change the semantics 
+ of the program slightly, unless <tt>-qstrict</tt> is specified. We recommend these optimizations when the desire for run-time 
+speed improvements outweighs the concern for limiting compile-time resources. 
+<p> The optimizations provided include: </p>
+<ul>
+  <li> In-depth memory access analysis </li>
+  <li> Better loop scheduling </li>
+  <li> High-order loop analysis and transformations (<tt>-qhot=level=0</tt>) </li>
+  <li> Inlining of small procedures within a compilation unit by default </li>
+  <li> Eliminating implicit compile-time memory usage limits </li>
+  <li> Widening, which merges adjacent load/stores and other operations </li>
+  <li> Pointer aliasing improvements to enhance other optimizations </li>
+</ul>
+
+<p><tt>`-O3 </tt> is equivalent to the following flags :</p>
+<ul>
+  <li> <tt> -O2 </tt> </li>
+  <li> <tt> -qhot=level=0 </tt> </li>
+</ul>
+]]>
+<include flag="F-O2" />
+<include flag="F-qhot" flagtext="-qhot=level=0" />
+</flag>
+
+
+
+<flag name="F-O4"
+      class="optimization"
+      regexp="-O4\b">
+<example> -O4 </example>
+<![CDATA[
+Perform optimizations for maximum performance. This includes interprocedural analysis on all of the objects presented on the "link" step. 
+<p><tt>-O4</tt> is equivalent to the following flags: </p>
+<ul>
+  <li> <tt> -O3 </tt> </li>
+  <li> <tt> -qipa=level=1 </tt> </li>
+  <li> <tt> -qarch=auto </tt> </li>
+  <li> <tt> -qtune=auto </tt> </li>
+  <li> <tt> -qsimd=auto </tt> </li>
+</ul>
+]]>
+<include flag="F-O3" />
+<include flag="F-qipa:level" flagtext="-qipa=level=1" />
+<include flag="F-qarch" flagtext="-qarch=auto" />
+<include flag="F-qtune" flagtext="-qtune=auto" />
+<include flag="F-qsimd" flagtext="-qsimd=auto" />
+</flag>
+
+
+<flag name="F-O5"
+      class="optimization"
+      regexp="-O5\b">
+<example> -O5 </example>
+<![CDATA[
+Perform optimizations for maximum performance. This includes maximum interprocedural analysis on all of the objects presented on the "link" step.
+This level of optimization will increase the compiler's memory usage and compile time requirements.
+<tt> -O5 </tt> provides all of the functionality of the <tt> -O4 </tt> option, but also provides the functionality of the <tt>-qipa=level=2</tt> option.
+
+<p><tt> -O5</tt> is equivalent to the following flags : </p>
+<ul>
+  <li> <tt> -O4 </tt> </li>
+  <li> <tt> -qipa=level=2 </tt></li>
+</ul>
+]]>
+<include flag="F-O4" />
+<include flag="F-qipa:level" flagtext="-qipa=level=2" />
+</flag>
+
+
+
+<flag name="F-q64"
+      class="optimization"
+      regexp="-q64\b">
+<example> -q64 </example>
+Generates 64-bit ABI binaries. The default is to generate 64-bit ABI binaries on little-endian Linux.
+</flag>
+
+
+
+<flag name="F-qalias"
+      class="optimization"
+      regexp="-qalias=(noansi|nostd)\b">
+<example> -qalias </example>
+<![CDATA[
+<p><tt>-qalias=ansi | noansi : </tt></p>
+If ansi is specified, type-based aliasing is used during optimization, which restricts the lvalues that can be safely used to access a data object.
+The default is ansi for the xlc, xlC, and c89 commands. This option has no effect unless you also specify the -O option. 
+<p><tt> qalias=std |nostd : </tt></p>
+Indicates whether the compilation units contain any non-standard aliasing. If so, specify nostd.  
+]]>
+</flag>
+
+
+<flag name="F-qalign"
+      class="optimization"
+      regexp="-qalign=(\S+)\b">
+<example> -qalign </example>
+<![CDATA[
+<p>Specifies what aggregate alignment rules the compiler uses for file compilation, where the alignment options are: </p>
+<ul>
+<li> bit_packed : The compiler uses the bit_packed alignment rules.</li>
+<li> full       : The compiler uses the RISC System/6000 alignment rules. This is the same as power.</li>
+<li> mac68k     : The compiler uses the Macintosh alignment rules.  This suboption is valid only for 32- bit compilations.</li>
+<li> natural    : The compiler maps structure members to their natural boundaries. </li>
+<li> packed     : The compiler uses the packed alignment rules. </li>
+<li> power      : The compiler uses the RISC System/6000 alignment rules. </li>
+<li> twobyte    : The compiler uses the Macintosh alignment rules.  This suboption is valid only for 32- bit compilations.</li>
+</ul>
+<p> The default is <tt>-qalign=full</tt>. </p>
+]]>
+</flag>
+
+
+
+<flag name="F-qalloca"
+      class="optimization"
+      regexp="-qalloca\b">
+Indicates that the compiler understands how to do alloca().  This flag is not supported on little-endian Linux.
+</flag>
+
+
+<flag name="F-qarch"
+      class="optimization"
+      regexp="-qarch=(\S+)\b">
+<example>-qarch</example>
+<![CDATA[
+Produces object code containing instructions that will run on the specified processors.
+<tt>auto</tt> selects the processor, the compile is being done on. <tt>pwr5x</tt> is the POWER5+ processor.
+
+<p>Supported values for this flag are :</p>
+<ul>
+  <li>auto      - Use the processor on which the program is compiled.</li>
+  <li>pwr8      - The POWER8 processor based systems.</li>
+  <li>pwr7      - The POWER7 processor based systems.</li>
+  <li>pwr6e     - The POWER6 processor in "Enhanced" mode based systems.</li>
+  <li>pwr6      - The POWER6 processor based systems.</li>
+  <li>pwr5x     - The POWER5+ processor based systems.</li>
+  <li>pwr5      - The POWER5 processor based systems.</li>
+  <li>pwr4      - The POWER4 processor based systems.</li>
+  <li>ppc970    - The PPC970 processor based systems.</li>
+</ul>
+]]>
+</flag>
+
+
+<flag name="F-qassert"
+      class="optimization"
+      regexp="-qassert=(refalign|contiguous)?\b">
+<example> -qassert </example>
+<![CDATA[
+<tt>-qassert=refalign | norefalign | contig </tt> :
+<ul>
+<li><tt>refalign</tt> specifies that all pointers inside the compilation unit only point to data that is naturally aligned according to the length of the pointer types. </li>
+<li><tt>contig</tt> specifies the compiler can perform optimizations according to the memory layout of the objects occupying contiguous blocks of memory.</li>
+</ul>
+]]>
+</flag>
+
+
+<flag name="F-qenablevmx"
+      class="optimization"
+      regexp="-qenablevmx\b">
+<example> -qenablevmx </example>
+Enables the generation of vector instructions for processors that support them.
+</flag>
+
+
+
+<flag name="F-qenum"
+      class="optimization"
+      regexp="-qenum=small\b">
+Tell the compiler that enum size is small.
+</flag>
+
+
+<flag name="F-qessl"
+      class="optimization"
+      regexp="-qessl\b">
+Specifies that, if either -lessl or -lesslsmp is specified, then Engineering and Scientific Subroutine Library 
+(ESSL) routines should be used in place of some Fortran 90 intrinsic procedures when there is a safe opportunity to do so.
+</flag>
+
+
+
+<flag name="F-qfdpr"
+      class="optimization"
+      regexp="-qfdpr\b">
+The compiler generates additional symbol information for use by the "fdpr" binary optimization tool.
+</flag>
+
+
+<flag name="F-qhot"
+      class="optimization"
+      regexp="-qhot(=arraypad|=simd|=(no)?vector|=level=[01])?\b">
+<example> -qhot </example>
+<![CDATA[
+Performs high-order transformations on loops during optimization.
+Some example usages are: -qhot, -qhot=level=1, -qhot=simd, -qhot=novector<br />
+<p>The supported values for <tt>suboption</tt> are : </p>
+<ul>
+   <li>arraypad - The compiler will pad any arrays where it infers that there may be a benefit.</li>
+   <li>level=0  - The compiler performs a limited set of high-order loop transformations.</li>
+   <li>level=1  - The compiler performs its full set of high-order loop transformations.</li>
+   <li>simd     - Replaces certain instruction sequences with vector instructions.</li>
+   <li>vector   - Replaces certain instruction sequences with calls to the MASS library.</li>
+</ul>
+<p>Specifying <tt>-qhot</tt> without suboptions implies <tt> -qhot=nosimd, -qhot=noarraypad, -qhot=vector</tt> and <tt>-qhot=level=1</tt>.
+The <tt>-qhot </tt>option is also implied by <tt> -O4 </tt> and <tt> -O5</tt> . </p>
+]]>
+</flag>
+
+
+
+
+<flag name="F-qinlglue"
+      class="optimization"
+      regexp="-qinlglue\b">
+This option inlines glue code that optimizes external function calls when compiling.
+</flag>
+
+
+
+
+<flag name="F-qinline"
+      class="optimization"
+      regexp="-qinline=(\S+)\b">
+The inline option specifies the threshold and limit of inlined functions. Example : -qinline=40. 
+</flag>
+
+<flag name="F-qipa:inline"
+      class="optimization"
+      regexp="-qipa=inline=(\S+)\b">
+The inline suboption  specifies the threshold and limit of inlined functions. 
+Examples : -qipa=inline=limit=1000 and -qipa=inline=threshold=100 
+</flag>
+
+
+<flag name="F-qipa:level"
+      class="optimization"
+      regexp="-qipa=level=[012]\b">
+      <example> -qipa=level </example>
+<![CDATA[
+<p>Enhances optimization by doing detailed analysis across procedures (interprocedural analysis or IPA). 
+The <tt>level</tt> determines the amount of interprocedural analysis and optimization that is performed.</p>
+
+<ul>
+<li> <tt>level=0</tt> does only minimal interprocedural analysis and optimization. </li>
+<li> <tt>level=1</tt> turns on inlining , limited alias analysis, and limited call-site tailoring.</li>
+<li><tt>level=2</tt> turns on full interprocedural data flow and alias analysis.</li>
+</ul>
+]]>
+
+</flag>
+
+
+<flag name="F-qipa:partition"
+      class="optimization"
+      regexp="-qipa=partition=large\b">
+The partition suboption specifies the size of the program sections that are analysed together. 
+Larger partitons may produce better analysis but require more storage. Default is medium.
+</flag>
+
+
+
+<flag name="F-qipa:threads"
+      class="optimization"
+      regexp="-qipa=threads(=\d+)?\b">
+<example> -qipa=threads </example>
+<![CDATA[
+The <tt>threads</tt> suboption allows the IPA optimizer to run portions of the optimization process in parallel threads, <br />
+which can speed up the compilation process on multi-processor systems. All the available threads, or the number specified by N, may be used. <br />
+N must be a positive integer.
+
+<p>Specifying <tt>nothreads</tt> does not run any parallel threads; this is equivalent to running one serial thread. 
+ This option does not affect the code in the final binary created. </p>
+]]>
+</flag>
+
+
+
+<flag name="F-qlargepage"
+      class="optimization"
+      regexp="-qlargepage\b">
+Indicates that a program, designed to execute in a large page memory environment, can take advantage.
+of large 16 MB pages provided on POWER4 and higher based systems. This flag is not supported on little-endian Linux.
+</flag>
+
+
+
+<flag name="F-qnoinline"
+      class="optimization"
+      regexp="-qnoinline\b">
+This option specifies that no functions are to be inlined.
+</flag>
+
+
+<flag name="F-qnoenablevmx"
+      class="optimization"
+      regexp="-qnoenablevmx\b">
+<example> -qnoenablevmx </example>
+Disables the generation of vector instructions.
+</flag>
+
+<flag name="F-qnoipa"
+      class="optimization"
+      regexp="-qnoipa\b">
+Suppresses interprocedural analysis (IPA), which is enabled by default at optimization levels -O4 and -O5.
+</flag>
+
+
+<flag name="F-qnoprefetch"
+      class="optimization"
+      regexp="-qnoprefetch\b">
+<example>-qnoprefetch</example>
+The noprefetch option will not add any prefetch instructions automatically.
+</flag>
+
+
+<flag name="F-qnothreaded"
+      class="optimization"
+      regexp="-qnothreaded\b">
+Do not use the XL compiler thread information.
+</flag>
+
+
+<flag name="F-qpdf1"
+      class="optimization"
+      regexp="-qpdf1\b">
+The option used in the first pass of a profile directed feedback compile that causes pdf information to be generated.
+The profile directed feedback optimization gathers data on both execution path and data values.
+It does not use hardware counters, nor gather any data other than path and data values for PDF specific optimizations.
+</flag>
+
+
+
+
+<flag name="F-qpdf2"
+      class="optimization"
+      regexp="-qpdf2\b">
+The option used in the second pass of a profile directed feedback compile that causes PDF information to be utilized during optimization.
+</flag>
+
+
+
+<flag name="F-qprefetch"
+      class="optimization"
+      regexp="-qprefetch=(aggressive|dscr=(\S+))\b">
+<example>-qprefetch</example>
+<![CDATA[
+<p>Inserts prefetch instructions automatically where there are opportunities to improve code performance. </p>
+<ul>
+<li><tt> -qprefetch=aggressive </tt> : Aggressively prefetch data.</li>
+<li><tt>-qprefetch=dscr</tt> option causes the Data Streams Control Register to be set to the value specified when executing this program.</li>
+</ul>
+<p>Example : -qprefetch=dscr=42 </p>
+]]>
+</flag>
+
+
+
+<flag name="F-qrestrict"
+      class="optimization"
+      regexp="-qrestrict\b">
+Adds the restrict type qualifier to the pointer parameters within all functions without modifying the source file.
+</flag>
+
+
+
+<flag name="F-qrtti"
+      class="optimization"
+      regexp="-qrtti\b">
+Cause the C++ compiler to generate Run Time Type Identification code
+</flag>
+
+
+
+<flag name="F-qsave"
+      class="optimization"
+      regexp="-qsave\b">
+Specifies that all local variables be treated as STATIC.
+</flag>
+
+
+<flag name="F-qsimd"
+      class="optimization"
+      regexp="-q(no)?simd(=auto|=noauto)?\b">
+<example>-qsimd</example>
+<![CDATA[
+<ul>
+<li><tt>-qsimd   </tt>  : enables the generation of vector instructions for processors that support them. </li>
+<li><tt>-qnosimd  </tt> : disables the generation of vector instructions.</li>
+<li><tt>Default </tt>   : whether <tt>-qsimd</tt> is specified or not, <tt>-qsimd=auto</tt> is implied at the -O3 or higher optimization level;
+<tt> -qsimd=noauto </tt> is implied at the <tt>-O2</tt> or lower optimization level.</li>
+</ul>
+]]>
+</flag>
+
+
+
+
+<flag name="F-qsmallstack:dynlenonheap"
+      class="optimization"
+      regexp="-qsmallstack=dynlenonheap\b">
+Causes the Fortran compiler to allocate dynamic arrays on the heap instead of the stack.
+</flag>
+
+
+
+
+<flag name="F-qsmp:auto"
+      class="optimization"
+      parallel="yes"
+      regexp="-qsmp=auto\b">
+Causes the compiler to automatically generate parallel code using OMP controls when possible.
+</flag>
+
+
+<flag name="F-qsmp:omp"
+      class="optimization"
+      parallel="yes"
+      regexp="-qsmp=omp\b">
+Tell the compiler that OMP controls are used to identify parallel code.
+</flag>
+
+
+
+<flag name="F-qspill"
+	class="optimization"
+	 regexp="-qspill(=[0-9]*)\b">
+Specifies the size of the register allocation spill area in bytes.
+</flag>
+
+
+
+<flag name="F-qstrict"
+      class="optimization"
+      regexp="-qnostrict|-qstrict(=nans)+\b">
+<example> -qstrict </example>
+<![CDATA[
+Ensures that optimizations done by default at optimization levels <tt>-O3</tt> and higher,
+ and, optionally at <tt>-O2</tt>, do not alter the semantics of a program.
+
+<p>The <tt>-qstrict=all, -qstrict=precision, -qstrict=exceptions, -qstrict=ieeefp,</tt> and <tt>-qstrict=order</tt> 
+suboptions and their negative forms are group suboptions that affect multiple, individual suboptions.
+Group suboptions act as if either the positive or the no form of every suboption of the group is specified.</p>
+
+<p>Default:</p>
+<ul>
+<li>Always <tt>-qstrict</tt> or <tt>-qstrict=all</tt> when the <tt>-qnoopt</tt> or <tt>-O0</tt> optimization level is in effect.</li>
+<li><tt>-qstrict</tt> or <tt>-qstrict=all</tt> is the default when the <tt>-O2</tt> or <tt>-O</tt> optimization level is in effect.</li>
+<li><tt>-qnostrict</tt> or <tt>-qstrict=none</tt> is the default when <tt>-O3</tt> or a higher optimization level is in effect.</li>
+</ul>
+&lt;suboptions_list&gt; is a colon-separated list of one or more of the following: 
+<ul>
+<li><tt> all | none</tt> : <tt>all</tt> disables all semantics-changing transformations, including those controlled by 
+			the ieeefp, order, library, precision, and exceptions suboptions. <tt> none</tt> enables these transformations.</li>
+<li><tt>precision | noprecision : precision</tt> disables all transformations that are likely to affect floating-point precision,
+			including those controlled by the subnormals, operationprecision, association, reductionorder, and library suboptions.
+                     	<tt>noprecision</tt> enables these transformations.</li>
+<li><tt>exceptions | noexceptions : exceptions </tt>disables all transformations likely to affect exceptions or be affected by them,
+                     including those controlled by the nans, infinities, subnormals, guards, and library suboptions.
+			 noexceptions enables these transformations.</li>
+<li><tt>ieeefp | noieeefp : ieeefp </tt>disables transformations that affect IEEE floating-point compliance, including
+                     those controlled by the nans, infinities, subnormals, zerosigns, and operation precision suboptions.
+		<tt>	 noieeefp </tt> enables these transformations.</li>
+<li><tt>nans | nonans : nans </tt>disables transformations that may produce incorrect results in the presence of, or that
+                     may incorrectly produce IEEE floating-point signaling NaN (not-a-number) values.
+		<tt>nonans</tt> enables these transformations.</li>
+<li><tt>infinities | noinfinities : infinities </tt> disables transformations that may produce incorrect results in the presence of,
+                     or that may incorrectly produce floating-point infinities.
+			<tt>noinfinities</tt> enables these transformations.</li>
+<li><tt>subnormals | nosubnormals : subnormals </tt>disables transformations that may produce incorrect results in the presence of,
+                     or that may incorrectly produce IEEE floating-point subnormals (formerly known as denorms).
+			<tt>nosubnormals</tt> enables these transformations.</li>
+<li><tt> zerosigns | nozerosigns : zerosigns </tt> disables transformations that may affect or be affected by whether the sign of a floating-point zero is correct.
+ 		<tt>nozerosigns</tt> enables these transformations.</li>
+<li><tt>operationprecision | nooperationprecision : operationprecision </tt>disables transformations that produce 
+			 approximate results for individual floating-point operations.
+                     <tt>nooperationprecision</tt> enables these transformations.</li>
+<li><tt>order | noorder : order </tt>disables all code reordering between multiple operations that may affect results or
+                     exceptions, including those controlled by the association, reductionorder, and guards suboptions.
+			 <tt>noorder</tt> enables code reordering.</li>
+<li><tt>association | noassociation : association </tt>disables reordering operations within an expression.
+			<tt>noassociation </tt>enables reordering operations.</li>
+<li><tt>reductionorder | noreductionorder: reductionorder</tt> disables parallelizing floating-point reductions.
+		<tt> noreductionorder</tt> enables these reductions.</li>
+<li><tt>guards | noguards : guards </tt>disables moving operations past guards or calls which control whether the operation should be executed or not.
+			<tt>noguards,</tt> enables these moving operations.</li>
+<li><tt>library | nolibrary : library </tt>disables transformations that affect floating-point library functions.
+			<tt>nolibrary</tt> enables these transformations.</li>
+</ul>
+
+]]>
+</flag>
+
+
+
+<flag name="F-qtune"
+      class="optimization"
+      regexp="-qtune=(\S+)\b">
+<example>-qtune</example>
+<![CDATA[
+Specifies the system architecture for which the executable program is optimized. This includes instruction scheduling and cache setting.
+
+<p>The supported values for <tt>suboption</tt> are : </p>
+<ul>
+  <li>auto	- Use the processor on which the program is compiled.</li>
+  <li>pwr8	- The POWER8 processor based systems.</li>
+  <li>pwr7	- The POWER7 processor based systems.</li>
+  <li>pwr6e	- The POWER6 processor in "Enhanced" mode based systems.</li>
+  <li>pwr6	- The POWER6 processor based systems.</li>
+  <li>pwr5x	- The POWER5+ processor based systems.</li>
+  <li>pwr5	- The POWER5 processor based systems.</li>
+  <li>pwr4	- The POWER4 processor based systems.</li>
+  <li>ppc970	- The PPC970 processor based systems.</li>
+</ul>
+]]>
+</flag>
+
+
+
+<flag name="F-qvecnvol"
+      class="optimization"
+      regexp="-qvecnvol\b">
+Specifies whether to use volatile or non-volatile vector registers. Volatile vector registers are registers whose 
+value is not preserved across function calls so the compiler will not depend on values in them across function calls.
+</flag>
+
+
+<flag name="F-qxlf90"
+      class="optimization"
+      regexp="-qxlf90=(signedzero|nosignedzero|autodealloc|noautodealloc|oldpad|nooldpad|)\b">
+<example> -qxlf90 </example>
+<![CDATA[
+Determines whether the compiler provides the Fortran 90 or the Fortran 95 level of support for certain aspects of the language.
+<p><tt>suboption</tt> can be one of the following :</p>
+<ul>
+<li><tt> signedzero | nosignedzero</tt> : Determines how the SIGN(A,B) function handles signed real 0.0. 
+			 In addition, determines whether negative internal values will be prefixed with a minus  
+			when formatted output would produce a negative sign zero.</li>
+<li><tt>autodealloc | noautodealloc</tt> : Determines whether the compiler deallocates allocatable arrays that are declared locally
+                     without either the SAVE or the STATIC attribute and have a status of currently allocated when the subprogram terminates.</li>
+<li><tt>oldpad | nooldpad</tt> : When the PAD=specifier is present in the INQUIRE statement, specifying -qxlf90=nooldpad
+                     returns UNDEFINED when there is no connection, or when the connection is for unformatted I/O.
+                     This behavior conforms with the Fortran 95 standard and above. Specifying -qxlf90=oldpad preserves the Fortran 90 behavior.</li>
+<li><tt>Default:</tt> signedzero, autodealloc and nooldpad for the xlf95, xlf95_r, xlf95_r7 and f95 invocation commands.
+                     <tt> nosignedzero, noautodealloc</tt> and <tt> oldpad</tt> for all other invocation commands.</li>
+</ul>
+]]>
+</flag>
+
+
+
+<flag name="Rstd"
+      class="optimization"
+      regexp="-R\s*[^ ]*stdcxx[^ ]*">
+Specifies library search directory for the Apache C++ Standard Library for use by the runtime linker.
+The information is recorded in the object file and passed to the runtime linker.
+</flag>
+
+
+
+<flag name="F-tl"
+      class="optimization"
+>
+<![CDATA[
+Applies the prefix specified by the -B option to the designated components.
+<table>
+<tr>
+<th align="left">Parameter</th>
+<th align="left">Description</th>
+<th align="left">Executable name</th>
+</tr>
+<tr>
+<td>a</td>
+<td>Assembler</td>
+<td>as</td>
+</tr>
+<tr>
+<td>b</td>
+<td>Low-level optimizer</td>
+<td>xlfcode</td>
+</tr>
+<tr>
+<td>c</td>
+<td>Compiler front end</td>
+<td>xlfentry</td>
+</tr>
+<tr>
+<td>d</td>
+<td>Disassembler</td>
+<td>dis</td>
+</tr>
+<tr>
+<td>F</td>
+<td>C preprocessor</td>
+<td>cpp</td>
+</tr>
+<tr>
+<td>h</td>
+<td>Array language optimizer</td>
+<td>xlfhot</td>
+</tr>
+<tr>
+<td>I</td>
+<td>High-level optimizer, compile step</td>
+<td>ipa</td>
+</tr>
+<tr>
+<td>l</td>
+<td>Linker</td>
+<td>ld</td>
+</tr>
+<tr>
+<td>z</td>
+<td>Binder</td>
+<td>bolt</td>
+</tr>
+</table>
+]]>
+</flag>
+
+
+
+
+<!--
+  -
+  -	Portability flags: syntactic compliance.
+  -
+  -->
+
+
+<flag name="F-qchars"
+      class="portability"
+      regexp="-qchars=(signed|unsigned)\b">
+   <![CDATA[
+<p> <tt> -qchars=signed</tt> : Causes the compiler to treat the type "char" as signed instead of the default of unsigned. </p>
+<p> <tt> -qchars=unsigned</tt> : Causes the compiler to treat the type "char" as unsigned. This is the default. </p>
+
+     Note: this particular portability flag is included for 526.blender_r per the recommendation in its documentation - see
+     <a href="http://www.spec.org/cpu2017/Docs/benchmarks/526.blender_r.html">
+        http://www.spec.org/cpu2017/Docs/benchmarks/526.blender_r.html</a>.
+]]>
+</flag>
+
+
+<flag name="F-qcpluscmt"
+      class="portability"
+      regexp="-qcpluscmt\b">
+Permits the usage of "//" to introduce a comment that lasts until the end of the current source line, as in C++.
+</flag>
+
+
+
+<flag name="F-qextname"
+      class="portability"
+      regexp="-qextname\b">
+Adds an underscore to global entities to match the C compiler ABI
+</flag>
+
+
+
+<flag name="F-qfixed"
+      class="portability"
+      regexp="-qfixed\b">
+Indicates that the input fortran source program is in fixed form.
+</flag>
+
+
+<flag name="F-qnoxlcompatmacros"
+      class="portability"
+      regexp="-qnoxlcompatmacros\b">
+Do not use the XL compiler compat macros.
+</flag>
+
+
+<flag name="F-qufmt"
+      class="portability"
+      regexp="-qufmt(=be|=le)\b">
+
+<![CDATA[
+Sets the byte order for I/O operations on unformatted data files.
+<p> &lt;suboption&gt; must be one of the following suboptions: </p>
+<ul>
+<li>be : Specifies that I/O operations on unformatted data files use big-endian byte order.</li>
+<li>le : Specifies that I/O operations on unformatted data files use little-endian byte order.</li>
+</ul>
+<p>Default: -qufmt=le</p>
+]]>
+
+</flag>
+
+
+
+<!--
+  -
+  -	Compiler declarations.
+  -
+  -
+  -->
+
+
+
+<flag
+      name="xlc"
+      class="compiler"
+      regexp="(\S*\/)?xlc(_r)?(_at)?\b">
+<example>
+xlc
+</example>
+<![CDATA[
+Invoke the IBM XL C compiler.
+<ul>
+<li>  xlc  </li>  
+<li>  xlc_r  </li> 
+<li>  xlc_at  </li> 
+<li>  xlc_r_at  </li> 
+</ul>
+<p>32-bit binaries are produced by default on big-endian Linux. Only 64-bit compilation is supported on little-endian Linux. 
+The xlc_r invocation is thread-safe version of xlc compiler. The xlc_at and xlc_r_at invocations link with the IBM Advanced Toolchain libraries. </p>
+]]>
+</flag>
+
+
+
+<flag
+      name="xlC"
+      class="compiler"
+      regexp="(\S*\/)?xlC(_r)?(_at)?\b">
+<example>
+xlC
+</example>
+<![CDATA[
+Invoke the IBM XL C++ compiler.
+<ul>
+<li>  xlC  </li>  
+<li>  xlC_r  </li> 
+<li>  xlC_at  </li> 
+<li>  xlC_r_at  </li> 
+</ul>
+<p>
+32-bit binaries are produced by default on big-endian Linux. Only 64-bit compilation is supported on little-endian Linux.
+The xlC_r invocation is thread-safe version of xlC compiler. The xlC_at and xlC_r_at invocations link with the IBM Advanced Toolchain libraries.
+</p>
+]]>
+</flag>
+
+
+
+<flag
+      name="xlf95"
+      class="compiler"
+      regexp="(\S*\/)?xlf95(_r)?(_at)?\b">
+<example>
+xlf95
+</example>
+<![CDATA[
+Invoke the IBM XL Fortran compiler.
+<ul>
+<li>  xlf95  </li>  
+<li>  xlf95_r  </li> 
+<li>  xlf95_at  </li> 
+<li>  xlf95_r_at  </li> 
+</ul>
+<p>   
+32-bit binaries are produced by default on big-endian Linux. Only 64-bit compilation is supported on little-endian Linux. 
+The xlf95_r invocation is thread-safe version of xlf95 compiler. The xlf95_at and xlf95_r_at invocations link with the IBM Advanced Toolchain libraries.
+</p>
+]]>
+
+
+
+</flag>
+
+
+<flag name="F-qlanglvl:extc99"
+      class="compiler"
+      regexp="-qlanglvl=extc99\b">
+Compilation conforms to the ISO C99 standard and accepts implementation-specific language extensions.
+</flag>
+
+
+
+
+<!--
+  -
+  -	Other flags: error & warning messages.
+  -
+  -->
+
+<flag name="F-qdebug:except"
+      class="other"
+      regexp="-qdebug=except\b">
+Causes the compiler to output a traceback if it abends.
+</flag>
+
+<flag name="F-qipa:noobject"
+      class="other"
+      regexp="-qipa=noobject\b">
+ Specifies whether to include standard object code in the object files.
+ The noobject suboption can substantially reduce overall
+ compilation time, by not generating object code during the first IPA phase.
+ This option does not affect the code in the final binary created.
+</flag>
+
+<flag name="F-qspillsize"
+      class="other"
+      regexp="-qspillsize=\d+\b">
+Specifies the size of the compiler's internal program storage areas, in bytes.  Example : -qspillsize=512.
+</flag>
+
+<flag name="F-qsuppress"
+      class="other"
+      regexp="-qsuppress=([^:\s]+):(\S+)">
+<example>-qsuppress=msg1:msg2</example>
+<include text="-qsuppress=$2" />
+<include text="-qsuppress=$1" />
+<display enable="0" />
+</flag>
+
+
+<flag name="F-qsuppress:"
+      class="other"
+      regexp="-qsuppress=([^:\s]+)\b">
+<example>
+-qsuppress
+</example>
+Suppresses the message with the message number specified. Examples : -qsuppress=1500-036 and -qsuppress=cmpmsg.
+</flag>
+
+
+<flag name="F-w"
+      class="other"
+      regexp="-w\b">
+Suppresses informational, language-level, and warning messages. This option sets -qflag=e:e.
+</flag>
+
+
+<flag name="F-qipa"
+      class="optimization"
+      regexp="-qipa\b">
+      <example> -qipa </example>
+Enhances optimization by doing detailed analysis across procedures (interprocedural analysis or IPA).
+</flag>
+
+
+
+</flagsdescription>

@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<!DOCTYPE flagsdescription
+    SYSTEM "http://www.spec.org/dtd/cpuflags2.dtd"
+>
+
+
+<flagsdescription>
+
+<filename>IBM_Linux_9009_S</filename>
+
+<title>IBM Power Linux Flags file</title>
+
+<style>
+<![CDATA[
+body { background: white; }
+]]>
+</style>
+
+<!-- =====================================================================
+  Information about the meaning of boot-time settings, BIOS options,
+  kernel tuning, and so forth can go in the 'platform_settings' section.
+
+  They'll be appended to the end of both the flags dump and per-result flag report.
+
+  As the contents should be HTML, it will save lots of time to just enclose
+  the whole thing in a CDATA section.  Section 2.3.1 again.
+     ===================================================================-->
+<submit_command>
+<![CDATA[
+<ul>
+<li> Each process was bound to a cpu using submit= with the numactl command
+<pre> 
+submit = numactl -l -C $BIND $command
+</pre> </li>
+<li> numactl : Control NUMA policy for processes or shared memory
+<pre>
+      -l
+       Allocates memory from the local node of the cpu.
+
+     -C
+       Only execute process on cpus.  This accepts physical cpu numbers
+       as shown in the processor fields of /proc/cpuinfo.
+</pre> </li>
+</ul>
+]]>
+</submit_command>
+
+<sw_environment>
+<![CDATA[
+
+<ul>
+<li>Environment variables that can be set before the run:
+<pre>
+XLFRTEOPTS=intrinthrds=1 : Causes the Fortran runtime to only use a single thread.
+LD_PRELOAD=/opt/at11.0/lib64/libhugetlbfs.so : By preloading the Hugepage library, it can back malloc() and shared memory, and text and data segments can be partially backed if they are large enough.
+TCMALLOC_MEMFS_MALLOC_PATH=/dev/hugepages/ : If set, specify a path where hugetlbfs or tmpfs is mounted. This may allow for speedier allocations.
+MALLOC_MMAP_MAX_=0 : when combined, MALLOC_TRIM_THRESHOLD and MALLOC_MMAP_MAX force MALLOC to use SBRK() rather than MMAP() to allocate memory. This improves performance, but it may reduce the total amount of memory available to your user processes (to no more than 1 Gbyte/process). 
+
+</pre></li>
+
+
+<li> To reserve 11520 huge pages out of the physical memory pool, issue the following command,
+<pre>
+echo 11520 > /proc/sys/vm/nr_hugepages
+</pre> 
+<pre>
+You can also use the environment variables below to manage huge pages behavior:
+
+HUGETLB_VERBOSE=0 : Turn off any debugging message from libhugetlbfs
+HUGETLB_MORECORE=yes:  Instructs libhugetlbfs to override libc's normal morecore() function with a hugepage version and use it for malloc(). 
+HUGETLB_MORECORE_HEAPBASE=0x50000000: Specifies that the hugepage heap address to start at 0x50000000. 
+HUGETLB_ELFMAP=R ; Instructs libhugetlbfs to place text segment in hugepages.
+HUGETLB_ELFMAP=W ; Instructs libhugetlbfs to place data and BSS segments in hugepages.
+HUGETLB_ELFMAP=RW ; Instructs libhugetlbfs to place all segments in hugepages.
+HUGETLB_ELFMAP=no ; Instructs libhugetlbfs not to place any segment in hugepages.
+</pre>
+</li>
+</ul>
+
+]]>
+</sw_environment>
+
+<os_tuning>
+<![CDATA[
+
+<ul>
+<li> <kbd>ulimit -s unlimited</kbd> 
+<br />Sets the maximum stack size to "<kbd>unlimited</kbd>".</li>
+</ul>
+
+]]>
+</os_tuning>
+
+<firmware>
+<![CDATA[
+
+<p> Power Mode is settable at the Advanced System Management menu that controls the trade-offs between power efficiency, frequency, and consistency. Four modes are available: </p>
+<ul>
+<li> Disable all modes : 
+<p> The processor clock frequency will be set to its fixed, nominal value. </p></li>
+<li> Enable Static Power Saver mode : 
+<p> Enabling this feature reduces power consumption by lowering the processor clock frequency and voltage to fixed values. This reduces the power consumption of the system while delivering predictable performance. </p></li>
+<li> Enable Dynamic Performance mode : 
+<p> Enabling this feature causes the processor frequency to vary based on workload and active core count. As the workload/active core count decreases, the processor uses less power, which enables the frequency to be increased above nominal. During periods of very low utilization, the processor frequency will be reduced in order to save energy. This mode provides consistent performance across all environmental operating conditions. </p></li>
+<li> Enable Maximum Performance mode : 
+<p>Enabling this feature causes the processor frequency to vary based on workload and active core count. As the workload/active core count decreases, the processor uses less power, which enables the frequency to be increased above nominal. In this mode, the allowed socket power is increased to the maximum value, which results in top performance along with increased fan noise and higher power consumption. In more stressful environmental conditions, performance may vary. This is the default mode. </p></li>
+</ul>
+<p> Idle Power Saver is an option that can be combined with Maximum Performance Mode, Dynamic Performance Mode, and Disable All Modes to allow the system to drop to a frequency level below nominal frequency under programmable idle circumstances.</p>
+
+<p> Three Speculative Execution Control knobs are available: </p>
+<ul>
+<li> Speculative execution controls to mitigate user-to-kernel and user-to-user side-channel attacks </li>
+<li> Speculative execution controls to mitigate user-to-kernel side-channel attacks </li>
+<li> Speculative execution fully enabled </li>
+</ul>
+<p> Default selection is &quot;Speculative execution controls to mitigate user-to-kernel and user-to-user side-channel attacks&quot;. </p>
+]]>
+</firmware>
+
+</flagsdescription>
