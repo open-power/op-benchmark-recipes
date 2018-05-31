@@ -8,22 +8,13 @@ https://developer.ibm.com/linuxonpower/advance-toolchain/advtool-installation/
 Currently AT is at version 11.0, which has been tested to run SPEC cpu2017. 
 
 >*Note: download and install Advanced Toolchain is expected to be slow.*
-### 2. Install IBM XLC and XLF compilers
+### 2. Install IBM XLC and XLF compilers (includes runtime)
 Download and install IBM XL C/C++ for Linux:
 https://www.ibm.com/developerworks/downloads/r/xlcpluslinux/index.html
 
 Download and install IBM XL Fortran for Linux: 
 https://www.ibm.com/developerworks/downloads/r/xlfortranlinux/index.html
 
-### 3. Install IBM XLC and XLF runtime and addons packages
-Download and install IBM XLC runtime version 16.1:
-http://www-01.ibm.com/support/docview.wss?uid=swg24044669
-
-Download and install IBM XLF runtime version 16.1:
-http://www-01.ibm.com/support/docview.wss?uid=swg24044783
-
-Download and install IBM XLF addons version 16.1:
-http://www-01.ibm.com/support/docview.wss?uid=swg24044789
 ### 3. Install IBM Feedback Directed Program Restructing (FDPR) for Linux on Power
 The ppc64le `fdprpro` package, a post-link optimizer, can be found at: https://developer.ibm.com/linuxonpower/sdk-packages/
 >This is not necessary to run binaries, but it is highly recommended.
