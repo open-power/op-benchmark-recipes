@@ -79,4 +79,5 @@ runcpu --action validate --config $CONFIG --tuning peak -S $SYMBOL # previous --
 # $SYMBOL is the system configuration in the config file, i.e. p9_32_core
 ```
 >For more information on `runcpu` please refer to: https://www.spec.org/cpu2017/Docs/runcpu.html 
+>Provided config file assumes FDPR has been installed.
 
