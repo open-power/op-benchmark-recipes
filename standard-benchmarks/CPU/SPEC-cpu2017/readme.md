@@ -8,7 +8,14 @@ https://developer.ibm.com/linuxonpower/advance-toolchain/advtool-installation/
 Currently AT is at version 11.0, which has been tested to run SPEC cpu2017. 
 
 >*Note: download and install Advanced Toolchain is expected to be slow.*
-### 2. Install IBM XLC and XLF runtime and addons packages
+### 2. Install IBM XLC and XLF compilers
+Download and install IBM XL C/C++ for Linux:
+https://www.ibm.com/developerworks/downloads/r/xlcpluslinux/index.html
+
+Download and install IBM XL Fortran for Linux: 
+https://www.ibm.com/developerworks/downloads/r/xlfortranlinux/index.html
+
+### 3. Install IBM XLC and XLF runtime and addons packages
 Download and install IBM XLC runtime version 16.1:
 http://www-01.ibm.com/support/docview.wss?uid=swg24044669
 
@@ -19,7 +26,7 @@ Download and install IBM XLF addons version 16.1:
 http://www-01.ibm.com/support/docview.wss?uid=swg24044789
 ### 3. Install IBM Feedback Directed Program Restructing (FDPR) for Linux on Power
 The ppc64le `fdprpro` package, a post-link optimizer, can be found at: https://developer.ibm.com/linuxonpower/sdk-packages/
-
+>This is not necessary to run binaries, but it is highly recommended.
 ### 4. Install SPEC CPU2017 package
 ##### 4.1 Extract SPEC CPU2017 package: 
 Assuming SPEC CPU2017 license has been purchased from http://spec.org/, and the code package has been downloaded:  
@@ -45,8 +52,11 @@ cd /home/spec/cpu2017
 You will need type "yes" to confirm installation directory. This may take a minute or two to finish.
 >For more information please refer to: https://www.spec.org/cpu2017/Docs/install-guide-unix.html
 ### 5. Compile the SPEC CPU2017 binary for ppc64le
-Copy the provided config file to `/home/spec/cpu2017/config` and edit it so the paths are correct. Then, calculate the number of _hugepages_ per 
-the [hugetlbpage support page](https://www.kernel.org/doc/Documentation/vm/hugetlbpage.txt)
+Copy the provided config file to `/home/spec/cpu2017/config` and edit it so the paths are correct. 
+
+Then, calculate the number of _hugepages_ per 
+the [hugetlbpage support page](https://www.kernel.org/doc/Documentation/vm/hugetlbpage.txt). Our guideline is 480-800 2MB (RPT) hugepages per copy.
+
 ```bash
 source ./shrc                           # Source SPEC shrc
 ulimit -s unlimited                     # Set stack size to unlimited
