@@ -54,7 +54,8 @@ You will need type "yes" to confirm installation directory. This may take a minu
 ### 5. Compile the SPEC CPU2017 binary for ppc64le
 Copy the provided config file to `/home/spec/cpu2017/config` and edit it so the paths are correct. 
 >Provided config file assumes FDPR has been installed.
-Then, calculate the number of _hugepages_ per 
+
+Calculate the number of _hugepages_ per 
 the [hugetlbpage support page](https://www.kernel.org/doc/Documentation/vm/hugetlbpage.txt). Our guideline is 480-800 2MB (RPT) hugepages per copy.
 
 ```bash
