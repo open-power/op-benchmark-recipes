@@ -70,7 +70,7 @@ export XLFRTEOPTS="intrinthds=1"        # Number of threads for parallel executi
 export XLSMPOPTS="spins=0:yields=0:schedule=STATIC:stack=8000000" # set XLC scheduling/parallelization/tuning runtime options
 export TCMALLOC_MEMFS_MALLOC_PATH="/dev/hugepages/"
 
-echo $num > /proc/sys/vm/nr_hugepages   # Huge pages allocated i.e. $num=11520
+echo $num > /proc/sys/vm/nr_hugepages   # Huge pages allocated i.e. $num=11520 for 24 copies
 sync; echo 3 > /proc/sys/vm/drop_caches # Drop cache 
 swapoff -a                              # Turn off all swap spaces
 
