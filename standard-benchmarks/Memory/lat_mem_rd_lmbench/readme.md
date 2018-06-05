@@ -44,3 +44,4 @@ cd lmbench3/bin
 numactl --physcpubind 0 --membind 0 ./lat_mem_rd 2000 512 # local memory check
 numactl --physcpubind 0 --membind 8 ./lat_mem_rd 2000 512 # cross memory check
 ```
+>You may need to change your `membind` based on your system topology. Please run `numactl -H` to check.
