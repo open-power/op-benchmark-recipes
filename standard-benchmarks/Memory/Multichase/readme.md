@@ -4,7 +4,7 @@
 Please clone the official `multichase` github repository and run make as follows:
 
 ```
-git clone https://github.com/google/multichase.git 
+git clone "https://github.com/google/multichase.git "
 cd multichase
 make
 ```
