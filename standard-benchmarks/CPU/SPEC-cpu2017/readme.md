@@ -72,7 +72,7 @@ runcpu --action validate --config $CONFIG --tuning peak -S $SYMBOL # previous --
 ```
 >For more information on `runcpu` please refer to: https://www.spec.org/cpu2017/Docs/runcpu.html 
 
-### 5. Run
+### 6. Run
 We have provided a script to facilitate running the benchmark. The only requirement is to provide the number of copies for a SPECrate run.
 ```bash
 ./RUN_2017.sh 4 # run 4 copies
