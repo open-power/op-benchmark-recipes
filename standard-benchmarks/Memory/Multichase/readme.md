@@ -1,50 +1,28 @@
 # Multichase - a pointer chaser benchmark
-
 ## 1. BUILD
 
-just type:
+Please clone the official `multichase` github repository and run make as follows:
 
-```make```
+```
+git clone https://github.com/google/multichase.git 
+cd multichase
+make
+```
 
 ## 2. INSTALL
-
-just run from current directory or copy multichase wherever you need to
+Just run from current directory or copy `multichase` wherever you need to.
 
 ## 3. RUN
+We have proveded a few scripts to run the benchmark. Please copy them to the multichase directory and run them;
 
-- By default, multichase will perform a pointer chase through an array size of 256MB and a stride size of 256 bytes for 2.5 seconds on a single thread:
+
+
+
+By default, multichase will perform a pointer chase through an array size of 256MB and a stride size of 256 bytes for 2.5 seconds on a single thread:
 
 ```bash 
  multichase
 ```
 
-- Pointer chase through an array of 4MB with a stride size of 64 bytes:
+> For more information, please refer to https://github.com/google/multichase/blob/master/README
 
-```bash 
- multichase -m 4m -s 64
-```
-
-  - Pointer chase through an array of 1GB for 10 seconds (-n is the number of 0.5  second samples):
-
-```bash
- multichase -m 1g -n 20
-```
-
-- Pointer chase through an array of 256KB with a stride size of 128 bytes on 2 threads.
-    Thread 0 accesses every 128th byte, thread 1 accesses every 128th byte offset by sizeof(void*)=8
-    on 64bit architectures:
-
-```bash
- multichase -m 256k -s 128 -t 2
-```
-
-- Pingpong: measure latency of exchanging a line between cores. To run, simply do:
-
-```bash
- pingpong -u
-```
-
-- Fairness: measure fairness with N threads competing to increment an atomic variable. To run, simply do:
-```bash
- fairness
-```
