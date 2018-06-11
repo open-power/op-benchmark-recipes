@@ -2,6 +2,8 @@
 ## SPEC benchmarks
 > For more info, consult: [Standard Performance Evaluation Corporation](http://spec.org)
 
+[CPU2017](CPU/SPEC-cpu2017)
+
 [CPU2006](CPU/SPEC-cpu2006)
 
 [JBB2015 : Java](Java/SPEC-jbb2015)
