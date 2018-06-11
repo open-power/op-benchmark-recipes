@@ -1,7 +1,7 @@
 #
 HARNESS="/spec/spec2017/v1.0/"
-CONFIG=<config_name>;
-COPIES=$1;
+CONFIG=config/LE64Test_P9.cfg
+COPIES=$1
 
 #---------------------------------------------------------------------------------------------------
 
