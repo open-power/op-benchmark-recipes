@@ -4,7 +4,7 @@
 Please clone the official `multichase` github repository and run make as follows:
 
 ```bash
-git clone "https://github.com/google/multichase.git "
+git clone 'https://github.com/google/multichase.git'
 cd multichase
 make
 ```
@@ -17,8 +17,8 @@ We have proveded a few scripts to run the benchmark. Please copy them to the mul
 ```bash
 cp *sh multichase
 cd multichase
-./run_mc.sh                  # multiple strides
-./numa-throughput-matrix.sh  # throughput
+./run_mc.sh                         # multiple strides
+./numa-throughput-matrix.sh         # throughput
 ./numa-throughput-matrix-threads.sh
 ./numa-latency-matrix-sanitized.sh  # latency
 ```
