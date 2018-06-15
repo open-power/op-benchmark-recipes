@@ -49,6 +49,9 @@ You will need type "yes" to confirm installation directory. This may take a minu
 ### 4. Compile the SPEC CPU2006 binary for ppc64le
 Copy the provided config file to `/home/spec/cpu2006/config`. Then calculate the number of _hugepages_ per 
 the [hugetlbpage support page](https://www.kernel.org/doc/Documentation/vm/hugetlbpage.txt)
+
+>Before running please setup your `$PATH` to include the bin directories of `atX.0`, `xlC` and `xlf`. Also, check that the paths in the config file provided are correct.
+
 ```bash
 source .shrc
 ulimit -s unlimited
@@ -63,8 +66,6 @@ runspec -a validate -c $CONFIG -T peak -S $SYMBOL -r int
 ```
 
 ### 5. Launch SPEC CPU2006 run
->Before running please setup your `$PATH` to include the bin directories of `at11.0`, `xlC` and `xlf`. Also, check that the paths in the config file provided are correct.
-
 To run CPU2006 integer part (both base and peak), please run:
 ```bash
 cd /home/spec/cpu2006
