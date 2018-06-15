@@ -63,6 +63,8 @@ runspec -a validate -c $CONFIG -T peak -S $SYMBOL -r int
 ```
 
 ### 5. Launch SPEC CPU2006 run
+>Before running please setup your `$PATH` to include the bin directories of `at11.0`, `xlC` and `xlf`. Also, check that the paths in the config file provided are correct.
+
 To run CPU2006 integer part (both base and peak), please run:
 ```bash
 cd /home/spec/cpu2006
