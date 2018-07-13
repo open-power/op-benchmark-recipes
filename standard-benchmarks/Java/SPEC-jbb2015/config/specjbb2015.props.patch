@@ -1,0 +1,25 @@
+--- specjbb2015.props	2017-04-19 18:02:43.000000000 -0400
++++ specjbb2015.props.mod	2018-06-26 13:28:55.738667295 -0400
+@@ -3,6 +3,22 @@
+ #     Control parameters for SPECjbb2015 benchmark                       #
+ #                                                                        #
+ ##########################################################################
++specjbb.forkjoin.workers.Tier1=230
++specjbb.forkjoin.workers.Tier2=2
++specjbb.forkjoin.workers.Tier3=36
++specjbb.comm.connect.client.pool.size=256
++specjbb.comm.connect.selector.runner.count=1
++specjbb.comm.connect.timeouts.connect=300000
++specjbb.comm.connect.timeouts.read=300000
++specjbb.comm.connect.timeouts.write=300000
++specjbb.comm.connect.worker.pool.max=60
++specjbb.comm.connect.worker.pool.min=59
++specjbb.controller.handshake.period=15000
++specjbb.controller.handshake.timeout=300000
++specjbb.heartbeat.period=20000
++specjbb.heartbeat.threshold=300000
++specjbb.mapreducer.pool.size=4
++specjbb.controller.maxir.maxFailedPoints=1
+ 
+ #  Each parameter is preceded by an explanatory comments section
+ #  containing the following information:
