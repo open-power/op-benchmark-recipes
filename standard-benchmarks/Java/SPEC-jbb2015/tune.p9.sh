@@ -10,7 +10,7 @@ pg_size=$(grep -i hugepagesize /proc/meminfo |awk '{print $2}')
 pg_num=$(echo $(( $(numactl -H |grep "node 0 size" |awk '{print $4}') * 9 / 10 / $(( $pg_size / 1024 )) )) )
 
 for x in `find /sys/devices/system/node/ -iname cpu[0-9]* | sed "s/cpu.*//" | sort -u` ; do 
-  echo $num >  ${x}/hugepages/hugepages-${pg_size}kB/nr_hugepages 
+  echo $pg_num >  ${x}/hugepages/hugepages-${pg_size}kB/nr_hugepages 
 done
 
 ## OS scheduler
