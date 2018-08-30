@@ -6,7 +6,9 @@
 
 [CPU2006](CPU/SPEC-cpu2006)
 
-[JBB2015 : Java](Java/SPEC-jbb2015)
+[JBB2015 : IBM JDK](Java/SPEC-jbb2015)
+
+[JBB2015 : OPEN JDK](Java/SPEC-jbb2015-openJDK)
 ## Standard benchmarks
 [FIO : Disk IO](Disk/FIO)
 
