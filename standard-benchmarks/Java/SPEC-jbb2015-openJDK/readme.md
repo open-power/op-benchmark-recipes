@@ -17,7 +17,7 @@ Please follow the instructions in http://openjdk.java.net/install/index.html
 ### 3. Copy over the patch files and tuning file:
 ```bash
 sudo cp run_multi.sh.patch /spec/specjbb2015/
-sudo cp config/specjbb2015.props.patch /spec/specjbb2015/config/
+sudo cp specjbb2015.props.patch /spec/specjbb2015/config/
 sudo cp tune.openjdk.sh /spec/specjbb2015/
 ```
 ### 4. Patch the default "run_multi.sh" and "specjbb2015.props" files:
