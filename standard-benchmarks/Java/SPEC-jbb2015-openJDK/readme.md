@@ -31,7 +31,7 @@ patch -b < specjbb2015.props.patch
 ### 5. Verify/modify "run_multi.sh" and "tune.p9.sh", if necessary:
 The patched `run_multi.sh` uses **numactl** to bind processor/memory for a system with 2 sockets (12 cores per socket) with at least 512GB of memory.
 
-Please identify how many sockets, cores and memory the SUT has and modify `run_multi.sh` and `tune.p9.sh` accordingly.
+Please identify how many sockets, cores and memory the SUT has and modify `run_multi.sh` and `tune.openjdk.sh` accordingly.
 
 For more information please refer to the [SPECjbb2015 user guide](https://www.spec.org/jbb2015/docs/userguide.pdf).
 ### 6. Launch "run_multi.sh" and check result:
